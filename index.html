@@ -303,7 +303,7 @@ mjx-container[display="true"] + br {
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            3.2k words 
+            3.5k words 
           </div>
         </div>
         
@@ -314,26 +314,35 @@ mjx-container[display="true"] + br {
         
           <div class="truncate-text">
             
-              我们将Atiyah所著的Commutative Algebra第一章的一些内容放在这里讨论. 我们不打算在这里诉诸过多的细节, 因为完整的证明大多在笔者的正式笔记(见about页面)写过.
+              我们将Atiyah所著的Commutative
+Algebra第一章的一些内容放在这里讨论.
+我们不打算在这里诉诸过多的细节,
+因为完整的证明大多在笔者的正式笔记(见about页面)写过.
 本文所涉及的环都是含幺的交换环.
-素谱(The Prime Spectrum)我们考虑环的全体素理想构成的集合.
+素谱(The Prime Spectrum)
+我们考虑环的全体素理想构成的集合.
 
-对于任意的的子集, 我们定义. 容易验证全体满足闭集公理, 因此我们在上赋予了一个拓扑, 称这个拓扑为Zariski拓扑.
-
-现在我们研究中的开集. 我们定义为的补集, 那么它具有如下的性质: 
+对于任意的的子集, 我们定义. 容易验证全体满足闭集公理, 因此我们在上赋予了一个拓扑,
+称这个拓扑为Zariski拓扑.
+现在我们研究中的开集. 我们定义为的补集, 那么它具有如下的性质:
 
 ;
 当且仅当是幂零元.
 当且仅当是单位.
-当且仅当. 注意本条事实上蕴含了第二条和第三条性质.
-是预紧的(quasi-compact). 更一般地, 每一个都是预紧集, 且一个集合是预紧的当且仅当它是一些形如的集合的有限并. 因此成为的主开集(basic open sets).
-
+当且仅当.
+注意本条事实上蕴含了第二条和第三条性质.
+是预紧的(quasi-compact).
+更一般地, 每一个都是预紧集,
+且一个集合是预紧的当且仅当它是一些形如的集合的有限并. 因此成为的主开集(basic
+open sets).
 
 我们可以把的素理想看成空间中的点, 为此我们记.
-单点集是闭的, 当且仅当是一个极大理想.
+
+单点集是闭的,
+当且仅当是一个极大理想.
 单点集的闭包.
 当且仅当.
-是空间, 即对于中两个相异的点, , 要么存在一个的邻域不包含, 要么存在的一个邻域不...
+是空间, 即对于中两个相异的点,...
             
           </div>
         
@@ -484,5 +493,20 @@ mjx-container[display="true"] + br {
 
   </div>
   <script src="/js/light-dark-switch.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
