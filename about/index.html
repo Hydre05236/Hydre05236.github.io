@@ -264,7 +264,7 @@ class="email">prabhavazrien56@gmail.com</a></li>
     <div id="vcomments"></div>
   </div>
   <script>
-      new Valine({"enable":true,"appId":"S2IAVptzMJt6uAeE6xepsoew-MdYXbMMI","appKey":"jpxXNwWbPNtjdl6GLvTaT1rc","placeholder":"Just go go","pageSize":10,"highlight":true,"serverURLs":null,"el":"#vcomments"});
+      new Valine({"enable":true,"appId":"S2IAVptzMJt6uAeE6xepsoew-MdYXbMMI","appKey":"jpxXNwWbPNtjdl6GLvTaT1rc","placeholder":"Just go go","pageSize":10,"highlight":true,"serverURLs":"https://s2iavptz.api.lncldglobal.com","el":"#vcomments"});
   </script>
 
 
@@ -308,5 +308,20 @@ class="email">prabhavazrien56@gmail.com</a></li>
 
   </div>
   <script src="/js/light-dark-switch.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
