@@ -268,7 +268,7 @@ mjx-container[display="true"] + br {
   <div class="widget-wrap">
     <div class="widget">
       <h3 class="widget-title">Tags</h3>
-      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Algebra/" rel="tag">Algebra</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Analysis/" rel="tag">Analysis</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Philosophy/" rel="tag">Philosophy</a></li></ul>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Algebra/" rel="tag">Algebra</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Analysis/" rel="tag">Analysis</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MC/" rel="tag">MC</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Philosophy/" rel="tag">Philosophy</a></li></ul>
     </div>
   </div>
 
@@ -293,7 +293,7 @@ mjx-container[display="true"] + br {
   
     
       <h1 itemprop="name">
-        <a class="p-name article-title" href="/2024/02/16/MC%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/">搭建MC小型模组服时可能遇到的问题和解决方案</a>
+        <a class="p-name article-title" href="/2024/02/16/MC%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/">搭建Minecraft小型模组服时可能遇到的问题和解决方案</a>
       </h1>
     
   
@@ -316,21 +316,34 @@ mjx-container[display="true"] + br {
           </div>
         </div>
         
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MC/" rel="tag">MC</a></li></ul>
+
       </header>
       <div class="e-content article-entry" itemprop="articleBody">
         
           <div class="truncate-text">
             
-              本文将介绍如何使用fabric来搭建Java版Minecraft服务器(包含模组). 请注意, 本文不会事无巨细地书写每一个细节, 我们只介绍一些只看单一的教程难以解决或在实际操作中容易发生疏漏但一般教程不会提到的点. 笔者在搭建服务器时主要参考的是明月庄主的这个视频.
+              本文将介绍如何使用fabric来搭建Java版Minecraft服务器(包含模组).
+请注意, 本文不会事无巨细地书写每一个细节,
+我们只介绍一些只看单一的教程难以解决或在实际操作中容易发生疏漏但一般教程不会提到的点.
+笔者在搭建服务器时主要参考的是明月庄主的这个视频.
 本文写于2024.2.16, 请注意时效问题.
-一些可能有用的链接Java17下载地址
+一些可能有用的链接
+Java17下载地址
 阿里云官网
 Fabric下载地址
-关于租云服务器我们搭建服务器的第一步是租一个云服务器. 笔者选择的是阿里云, 因为阿里云在实名了之后可以免费使用三个月的小型云服务器. 具体的租赁过程我们不在此处展示(参考文首链接), 这里只说几个值得注意的点.
+关于租云服务器
+我们搭建服务器的第一步是租一个云服务器. 笔者选择的是阿里云,
+因为阿里云在实名了之后可以免费使用三个月的小型云服务器.
+具体的租赁过程我们不在此处展示(参考文首链接),
+这里只说几个值得注意的点.
 
-阿里云的服务器是可以白嫖三个月的(2024.2.16), 在实名认证完成之后可以找到认证福利, 有的可以体验一个月, 有的可以体验三个月. 因为小型的MC服务器事实上不需要很高的配置, 所以笔者认为嫖三个月的更划算一些, 当然这个选择因人而异.
-
-如果你是白嫖的服务器, 那么你需要手动设置登陆密码. 具体操作见下图:然后点击”选择实例”, 就会跳转到下面这幅图的位置:然后按照提示一...
+阿里云的服务器是可以白嫖三个月的(2024.2.16),
+在实名认证完成之后可以找到认证福利, 有的可以体验一个月,
+有的可以体验三个月. 因为小型的MC服务器事实上不需要很高的配置,
+所以笔者认为嫖三个月的更划算一些, 当然这个选择因人而异.
+如果你是白嫖的服务器, 那么你需要手动设置登陆密码. 具体操作见下图:
+ 然后点击"选择实例"...
             
           </div>
         
@@ -392,7 +405,7 @@ Fabric下载地址
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            1k words 
+            7.3k words 
           </div>
         </div>
         
@@ -403,11 +416,23 @@ Fabric下载地址
         
           <div class="truncate-text">
             
-              摘要本文我们将讨论调和函数的零点问题. 我们首先证明了对于调和函数, 如果其在一个正测集上取值恒为, 那么它在全平面内取值为. 下面我们希望得到更强的结论. 通过考察两条直线的情形我们发现, 如果在两条交角为的无理数倍的直线上取值恒为, 那么就可以得到在全平面上恒为. 在这里反射引理起到了重要的作用. 进一步, 我们依次讨论了在一般二次曲线上恒为的调和函数, 其中除了渐近线交角为的无理数倍的双曲线外, 均存在某些非平凡调和函数在这些二次曲线上恒为. 在这里我们主要的处理手法是使用共形映射将二次曲线转化为两条直线的退化情形.
-一些记号上的约定除非另加说明, 我们用表示中的一个连通的开区域. 本文讨论的调和函数都是在上调和.
-零点集为正测集的调和函数在这一部分, 我们将证明下面的定理: 
-定理1 设是调和函数, 且的零点全体构成一个正测集, 那么是一个常值函数.
-定理1的证明我们首先观察到每一个调和函数都是一个实解析函数. 这是因为每一个调和函数都可以看作是一个全纯函数的实部, 从而是实解析的. 现在我们只要证明一个零点集为正测集的实解析函数是常数. 为此, 我们先考虑一维的情形. ...
+              摘要
+本文我们将讨论调和函数的零点问题. 我们首先证明了对于调和函数, 如果其在一个正测集上取值恒为, 那么它在全平面内取值为. 下面我们希望得到更强的结论.
+通过考察两条直线的情形我们发现, 如果在两条交角为的无理数倍的直线上取值恒为, 那么就可以得到在全平面上恒为. 在这里反射引理起到了重要的作用.
+进一步, 我们依次讨论了在一般二次曲线上恒为的调和函数, 其中除了渐近线交角为的无理数倍的双曲线外,
+均存在某些非平凡调和函数在这些二次曲线上恒为.
+在这里我们主要的处理手法是使用共形映射将二次曲线转化为两条直线的退化情形.
+一些记号上的约定
+除非另加说明, 我们用表示中的一个连通的开区域.
+本文讨论的调和函数都是在上调和.
+零点集为正测集的调和函数
+在这一部分, 我们将证明下面的定理:
+定理1
+设是调和函数, 且的零点全体构成一个正测集, 那么是一个常值函数.
+定理1的证明
+我们首先观察到每一个调和函数都是一个实解析函数.
+这是因为每一个调和函数都可以看作是一个全纯函数的实部, 从而是实解析的.
+现在我们只要证明一个零点集为正测集的实解析函数是常...
             
           </div>
         
@@ -524,7 +549,7 @@ Rudin第11章习题第6题)来测试一下较长公式的显示情况.
    
 
 
-<article id="post-Notes-on-Chap-1-of-Atiyah-Commutative-Algebra" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+<article id="post-Notes-onAtiyah-Commutative-Algebra" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
    
   <div class="article-inner">
     <div class="article-main">
@@ -535,7 +560,7 @@ Rudin第11章习题第6题)来测试一下较长公式的显示情况.
   
     
       <h1 itemprop="name">
-        <a class="p-name article-title" href="/2024/02/10/Notes-on-Chap-1-of-Atiyah-Commutative-Algebra/">Notes on Chap.1 of Atiyah Commutative Algebra</a>
+        <a class="p-name article-title" href="/2024/02/10/Notes-onAtiyah-Commutative-Algebra/">Notes on Atiyah Commutative Algebra</a>
       </h1>
     
   
@@ -554,7 +579,7 @@ Rudin第11章习题第6题)来测试一下较长公式的显示情况.
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            3.5k words 
+            7.3k words 
           </div>
         </div>
         
@@ -565,11 +590,14 @@ Rudin第11章习题第6题)来测试一下较长公式的显示情况.
         
           <div class="truncate-text">
             
-              我们将Atiyah所著的Commutative
-Algebra第一章的一些内容放在这里讨论.
-我们不打算在这里诉诸过多的细节,
+              Last Update time: 2024/2/16, 更新至第二章(除了函子的一些性质).
+我们将Atiyah所著的Commutative
+Algebra中的一些内容放在这里讨论. 我们不打算在这里诉诸过多的细节,
 因为完整的证明大多在笔者的正式笔记(见about页面)写过.
 本文所涉及的环都是含幺的交换环.
+提示: 推荐读者使用白底模式阅读,
+否则有些交换图的字体颜色会和背景颜色混淆.
+Chap.1 环与理想
 素谱(The Prime Spectrum)
 我们考虑环的全体素理想构成的集合.
 
@@ -584,16 +612,7 @@ Algebra第一章的一些内容放在这里讨论.
 注意本条事实上蕴含了第二条和第三条性质.
 是预紧的(quasi-compact).
 更一般地, 每一个都是预紧集,
-且一个集合是预紧的当且仅当它是一些形如的集合的有限并. 因此成为的主开集(basic
-open sets).
-
-我们可以把的素理想看成空间中的点, 为此我们记.
-
-单点集是闭的,
-当且仅当是一个极大理想.
-单点集的闭包.
-当且仅当.
-是空间, 即对于中两个相异的点,...
+且一个集合是预紧的当且仅当它是一些形如的集合的有限并. 因此成为的主开集(basi...
             
           </div>
         
@@ -605,7 +624,7 @@ open sets).
      
     <a class="right-panel  non-pic  "
       
-      href="/2024/02/10/Notes-on-Chap-1-of-Atiyah-Commutative-Algebra/" 
+      href="/2024/02/10/Notes-onAtiyah-Commutative-Algebra/" 
     >
        
       <i class="fa-solid fa-angle-right non-pic"></i>
@@ -743,20 +762,5 @@ open sets).
 
   </div>
   <script src="/js/light-dark-switch.js"></script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
