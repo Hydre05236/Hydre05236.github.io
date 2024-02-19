@@ -312,7 +312,7 @@ mjx-container[display="true"] + br {
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            1.1k words 
+            1.3k words 
           </div>
         </div>
         
@@ -332,6 +332,7 @@ mjx-container[display="true"] + br {
 Java17下载地址
 阿里云官网
 Fabric下载地址
+CurseForge官网
 关于租云服务器
 我们搭建服务器的第一步是租一个云服务器. 笔者选择的是阿里云,
 因为阿里云在实名了之后可以免费使用三个月的小型云服务器.
@@ -342,8 +343,7 @@ Fabric下载地址
 在实名认证完成之后可以找到认证福利, 有的可以体验一个月,
 有的可以体验三个月. 因为小型的MC服务器事实上不需要很高的配置,
 所以笔者认为嫖三个月的更划算一些, 当然这个选择因人而异.
-如果你是白嫖的服务器, 那么你需要手动设置登陆密码. 具体操作见下图:
- 然后点击"选择实例"...
+如果你是白嫖的服务器, 那么你需要手动设置登陆密码. 具体操作见下图...
             
           </div>
         
@@ -762,5 +762,20 @@ Chap.1 环与理想
 
   </div>
   <script src="/js/light-dark-switch.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
