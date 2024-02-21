@@ -28,7 +28,7 @@
 <meta property="og:description" content="注意: 本文还没有写完. 我们用本文简要介绍\(BMO\)空间的一些性质. 笔者目前的学习兴趣不在这种过硬的分析上, 因此本文随缘更新. 我们的罗列主要的参考书如下: [1] Loukas Grafakos Classical Fourier Analysis(GTM249). [2] Loukas Grafakos Morden Fourier Analysis(GTM250). [">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-02-21T03:27:09.000Z">
-<meta property="article:modified_time" content="2024-02-21T08:14:11.705Z">
+<meta property="article:modified_time" content="2024-02-21T11:38:34.996Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Analysis">
 <meta name="twitter:card" content="summary">
@@ -206,7 +206,7 @@
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            9.5k words 
+            14k words 
           </div>
         </div>
         
@@ -535,7 +535,133 @@ P_t*f \right) \left( y \right) \right|\cdot P_t\left( x-y \right)
 \]</span></p></li>
 </ul>
 <h3 id="命题8的证明">命题8的证明</h3>
-<p>后续补充.</p>
+<p><span class="math inline">\(\text{(i)}\)</span> 我们首先注意到 <span
+class="math display">\[
+\left| \underset{B}{\mathrm{Avg}}f-\underset{2B}{\mathrm{Avg}}f
+\right|=\left| \frac{1}{\left| B \right|}\int_B{f\left( x \right)
+-\underset{2B}{\mathrm{Avg}}f\mathrm{d}x} \right|\le \frac{2^n}{\left|
+2B \right|}\int_{2B}{\left| f\left( x \right)
+-\underset{2B}{\mathrm{Avg}} \right|\mathrm{d}x}=2^n\left\| f \right\|
+_{BMO}.
+\]</span> 因此对一般的情形, 我们有 <span class="math display">\[
+\left| \underset{B}{\mathrm{Avg}}f-\underset{2^mB}{\mathrm{Avg}}f
+\right|\le \sum_{k=0}^{m-1}{\left|
+\underset{2^kB}{\mathrm{Avg}}f-\underset{2^{k+1}B}{\mathrm{Avg}}f
+\right|}\le \sum_{k=0}^{m-1}{2^n\left\| f \right\| _{BMO}}=2^nm\cdot
+\left\| f \right\| _{BMO}.
+\]</span></p>
+<p><span class="math inline">\(\text{(ii)}\)</span> 我们不妨设<span
+class="math inline">\(B(x_0,R)=B(0,1)=B\)</span>, 否则只要考虑<span
+class="math inline">\(f(x_0+Rx)\)</span>即可. 注意到 <span
+class="math display">\[
+\begin{aligned}
+\int_{\mathbb{R} ^n}{\frac{\left| f\left( x \right) -\mathrm{Avg}_Bf
+\right|}{\left( 1+\left| x \right| \right)
+^{n+\delta}}\mathrm{d}x}&amp;=\int\limits_{B\cup \left(
+\bigcup_{k=0}^{\infty}{2^{k+1}B\setminus 2^kB} \right)}{\frac{\left|
+f\left( x \right) -\mathrm{Avg}_Bf \right|}{\left( 1+\left| x \right|
+\right) ^{n+\delta}}\mathrm{d}x}
+\\
+&amp;=\int_B{\frac{\left| f\left( x \right) -\mathrm{Avg}_Bf
+\right|}{\left( 1+\left| x \right| \right)
+^{n+\delta}}\mathrm{d}x}+\sum_{k=0}^{\infty}{\int_{2^{k+1}B\setminus
+2^kB}{\frac{\left| f\left( x \right) -\mathrm{Avg}_Bf \right|}{\left(
+1+\left| x \right| \right) ^{n+\delta}}\mathrm{d}x}}
+\\
+&amp;\le \int_B{\left| f\left( x \right) -\underset{B}{\mathrm{Avg}}f
+\right|\mathrm{d}x}
+\\
+&amp;\quad+\sum_{k=0}^{\infty}{\frac{1}{2^{k\left( n+\delta
+\right)}}\int_{2^{k+1}B}{\left( \left| f\left( x \right)
+-\underset{2^{k+1}B}{\mathrm{Avg}}f \right|+\left| f\left( x \right)
+-\underset{B}{\mathrm{Avg}}f \right| \right) \mathrm{d}x}}
+\\
+&amp;\le \alpha \left( n \right) \cdot \left\| f \right\|
+_{BMO}+\sum_{k=0}^{\infty}{\frac{1+2^n\left( k+1 \right)}{2^{k\left(
+n+\delta \right)}}\left( 2^{k+1} \right) ^n\alpha \left( n \right)}\cdot
+\left\| f \right\| _{BMO}
+\\
+&amp;=C_{n,\delta}\left\| f \right\| _{BMO},
+\end{aligned}
+\]</span> 这就完成了证明.</p>
+<p><span class="math inline">\(\text{(iii)}\)</span>
+本问的前半部分与第二问的证明方法类似. 记<span
+class="math inline">\(B(y,t)=B_t\)</span>, 我们注意到 <span
+class="math display">\[
+\begin{aligned}
+\int_{\mathbb{R} ^n}{\frac{t\left| f\left( x \right)
+-\mathrm{Avg}_{B_t}f \right|}{\left( t^2+\left| x-y \right|^2 \right)
+^{\frac{n+1}{2}}}\mathrm{d}x}&amp;=\int\limits_{B_t\cup \left(
+\bigcup_{k=0}^{\infty}{2^{k+1}B_t\setminus 2^kB_t}
+\right)}{\frac{t\left| f\left( x \right) -\mathrm{Avg}_{B_t}f
+\right|}{\left( t^2+\left| x-y \right|^2 \right)
+^{\frac{n+1}{2}}}\mathrm{d}x}
+\\
+&amp;\le \int_{B_t}{\frac{t\left| f\left( x \right) -\mathrm{Avg}_{B_t}f
+\right|}{\left( t^2+\left| x-y \right|^2 \right)
+^{\frac{n+1}{2}}}\mathrm{d}x}+\sum_{k=0}^{\infty}{\int_{2^{k+1}B\setminus
+2^kB}{\frac{t\left| f\left( x \right) -\mathrm{Avg}_{B_t}f
+\right|}{\left( t^2+\left| x-y \right|^2 \right)
+^{\frac{n+1}{2}}}\mathrm{d}x}}
+\\
+&amp;\le \int_{B_t}{\frac{1}{t^n}\left| f\left( x \right)
+-\underset{B_t}{\mathrm{Avg}}f \right|\mathrm{d}t}
+\\
+&amp;\quad+\sum_{k=0}^{\infty}{\frac{1}{t^n\cdot 2^{k\left( n+1
+\right)}}\int_{2^{k+1}B_t}{\left( \left| f\left( x \right)
+-\underset{2^{k+1}B_t}{\mathrm{Avg}}f \right|+\left| f\left( x \right)
+-\underset{B_t}{\mathrm{Avg}}f \right| \right) \mathrm{d}x}}
+\\
+&amp;\le \alpha \left( n \right) \left\| f \right\|
+_{BMO}+\sum_{k=0}^{\infty}{\frac{\left( 1+2^n\left( k+1 \right) \right)
+\left( 2^{k+1} \right) ^n}{2^{k\left( n+1 \right)}}\alpha \left( n
+\right)}\left\| f \right\| _{BMO}
+\\
+&amp;=C_{n}^{\prime}\left\| f \right\| _{BMO}.
+\end{aligned}
+\]</span> 另一方面, 我们有 <span class="math display">\[
+\begin{aligned}
+\int_{\mathbb{R} ^n}{\left| \left( P_t*f \right) \left( y \right)
+-\underset{B_t}{\mathrm{Avg}}f \right|\cdot P_t\left( x-y \right)
+\mathrm{d}x}&amp;=\left| \left( P_t*f \right) \left( y \right)
+-\underset{B_t}{\mathrm{Avg}}f \right|
+\\
+&amp;\le \int_{\mathbb{R} ^n}{P_t\left( x-y \right) \cdot \left| f\left(
+x \right) -\underset{B_t}{\mathrm{Avg}}f \right|\mathrm{d}x}
+\\
+&amp;\le C_{n}^{\prime\prime}\left\| f \right\| _{BMO},
+\end{aligned}
+\]</span> 因此 <span class="math display">\[
+\begin{aligned}
+&amp;\quad\int_{\mathbb{R} ^n}{\left| f\left( x \right) -\left( P_t*f
+\right) \left( y \right) \right|\cdot P_t\left( x-y \right) \mathrm{d}x}
+\\
+&amp;\le \int_{\mathbb{R} ^n}{\left| f\left( x \right)
+-\underset{B_t}{\mathrm{Avg}}f \right|\cdot P_t\left( x-y \right)
+\mathrm{d}x}+\int_{\mathbb{R} ^n}{\left| \left( P_t*f \right) \left( y
+\right) -\underset{B_t}{\mathrm{Avg}}f \right|\cdot P_t\left( x-y
+\right) \mathrm{d}x}
+\\
+&amp;\le C_{n}^{\prime}\left\| f \right\|
+_{BMO}+C_{n}^{\prime\prime}\left\| f \right\| _{BMO}=C_n\left\| f
+\right\| _{BMO}.
+\end{aligned}
+\]</span> 对于反向的不等式, 我们设 <span class="math display">\[
+A=\mathop {\mathrm{sup}} \limits_{y\in \mathbb{R} ^n}\mathop
+{\mathrm{sup}} \limits_{t&gt;0}\int_{\mathbb{R} ^n}{\left| f\left( x
+\right) -\left( P_t*f \right) \left( y \right) \right|\cdot P_t\left(
+x-y \right) \mathrm{d}x},
+\]</span> 那么我们有 <span class="math display">\[
+A\ge \int_{\mathbb{R} ^n}{\left| f\left( x \right) -\left( P_t*f \right)
+\left( y \right) \right|\cdot P_t\left( x-y \right) \mathrm{d}x}\ge
+\frac{c_{n}^{\prime}}{t^n}\int_{B_t}{\left| f\left( x \right) -\left(
+P_t*f \right) \left( y \right) \right|\mathrm{d}x},
+\]</span> 因此由命题3我们有 <span class="math display">\[
+\left\| f \right\| _{BMO}\le \frac{2A}{c_{n}^{\prime}\alpha \left( n
+\right)},
+\]</span> 这就完成了证明.</p>
+<h1 id="john-nirenberg定理">John-Nirenberg定理</h1>
+<p>咕咕咕~~~</p>
 
         
       </div>
@@ -629,20 +755,5 @@ P_t*f \right) \left( y \right) \right|\cdot P_t\left( x-y \right)
 
   </div>
   <script src="/js/light-dark-switch.js"></script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
