@@ -324,7 +324,7 @@ mjx-container[display="true"] + br {
           <div class="truncate-text">
             
               注意: 本文还没有写完.
-我们用本文简要介绍\(BMO\)空间的一些性质.
+我们用本文简要介绍空间的一些性质.
 笔者目前的学习兴趣不在这种过硬的分析上, 因此本文随缘更新.
 我们的罗列主要的参考书如下:
 [1] Loukas Grafakos Classical Fourier Analysis(GTM249).
@@ -333,13 +333,17 @@ mjx-container[display="true"] + br {
 [4] 程民德《实分析》.
 [5] 周民强《调和分析讲义(实变方法)》.
 定义与基本性质
-我们首先给出\(BMO\)的定义.
-定义(\(BMO\)空间)
-设\(f\)是一个定义在\(\mathbb{R}^n\)上的局部可积的复函数, 令
-\[
-\left\| f \right\| _{BMO}=\mathop {\mathrm{sup}}
-\limits_{Q}\int_Q{\left| f\left( x \right) -\underset{Q}{\mathrm{Avg}}f
-\right|\mathrm{d...
+我们首先给出的定义.
+定义(空间)
+设是一个定义在上的局部可积的复函数, 令
+ 这里上确界是对全体中的方体取的. 我们称是有界平均震动函数(Bounded
+Mean Oscillation), 如果. 记为全体满足的局部可积函数构成的集合.
+注记
+注意到不是范数.
+事实上对所有的常函数都有, 因此如果和之间相差一个常数, 那么.
+下面我们总将两个差为一个常数的函数视为一类函数, 并将看作一个范数.
+一些基本性质
+下面我们给出的一些...
             
           </div>
         
@@ -851,5 +855,20 @@ Chap.1 环与理想
 
   </div>
   <script src="/js/light-dark-switch.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
