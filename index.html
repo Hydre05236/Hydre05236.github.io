@@ -312,7 +312,7 @@ mjx-container[display="true"] + br {
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            1.2k words 
+            2.3k words 
           </div>
         </div>
         
@@ -323,7 +323,8 @@ mjx-container[display="true"] + br {
         
           <div class="truncate-text">
             
-              我们用本文来介绍明日方舟桌游游城拓荒:筑基者(以下简称桌游)的基本玩法.
+              鉴于我的室友锐评明日方舟桌游游城拓荒:筑基者(以下简称桌游)规则书写的像生物试卷,
+我们在本文中我们用人话来介绍该桌游的基本玩法.
 我们主要介绍四人玩法.
 在下文中, 使用粗体表示道具类专有名词,
 而斜体表示强调或其余需要标注的专有名词. 除非另加说明,
@@ -346,10 +347,7 @@ mjx-container[display="true"] + br {
 将22个资源点指示物放在地图旁备用,
 将回合数标记放置在地图上回合数计数条"1"的位置.
 
-以上工作完成后桌面如下图所示: 
-玩家版面
-
-从绿, 黄, ...
+以上工...
             
           </div>
         
@@ -1049,7 +1047,7 @@ Rudin第11章习题第6题)来测试一下较长公式的显示情况.
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            18k words 
+            20k words 
           </div>
         </div>
         
@@ -1061,7 +1059,7 @@ Rudin第11章习题第6题)来测试一下较长公式的显示情况.
           <div class="truncate-text">
             
               Last Update time: 2024/3/16,
-更新至第三章习题(21/30).
+更新至第三章习题(24/30).
 我们将Atiyah所著的Commutative
 Algebra中的一些内容放在这里讨论. 我们不打算在这里诉诸过多的细节,
 因为完整的证明大多在笔者的正式笔记(见about页面)写过.
@@ -1233,5 +1231,20 @@ Chap.1 环与理想
 
   </div>
   <script src="/js/light-dark-switch.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
