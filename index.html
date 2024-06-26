@@ -44,7 +44,7 @@
   
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 7.1.1"><style>mjx-container[jax="SVG"] {
+<meta name="generator" content="Hexo 7.2.0"><style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
 
@@ -268,7 +268,7 @@ mjx-container[display="true"] + br {
   <div class="widget-wrap">
     <div class="widget">
       <h3 class="widget-title">Tags</h3>
-      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Algebra/" rel="tag">Algebra</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Analysis/" rel="tag">Analysis</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MC/" rel="tag">MC</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Philosophy/" rel="tag">Philosophy</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/memes/" rel="tag">memes</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%B2%A5/" rel="tag">粥</a></li></ul>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Algebra/" rel="tag">Algebra</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Algebraic-Geometry/" rel="tag">Algebraic Geometry</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Analysis/" rel="tag">Analysis</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Philosophy/" rel="tag">Philosophy</a></li></ul>
     </div>
   </div>
 
@@ -282,7 +282,7 @@ mjx-container[display="true"] + br {
    
 
 
-<article id="post-群表示论笔记" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+<article id="post-Nullstellensatz" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
    
   <div class="article-inner">
     <div class="article-main">
@@ -293,7 +293,7 @@ mjx-container[display="true"] + br {
   
     
       <h1 itemprop="name">
-        <a class="p-name article-title" href="/2024/04/15/%E7%BE%A4%E8%A1%A8%E7%A4%BA%E8%AE%BA%E7%AC%94%E8%AE%B0/">群表示论笔记</a>
+        <a class="p-name article-title" href="/2024/06/26/Nullstellensatz/">Nullstellensatz</a>
       </h1>
     
   
@@ -301,7 +301,7 @@ mjx-container[display="true"] + br {
 
         <div class='meta-info-bar'>
           <div class="meta-info">
-  <time class="dt-published" datetime="2024-04-15T05:23:35.000Z" itemprop="datePublished">2024-04-15</time>
+  <time class="dt-published" datetime="2024-06-26T12:50:15.000Z" itemprop="datePublished">2024-06-26</time>
 </div>
           <div class="need-seperator meta-info">
             <div class="meta-cate-flex">
@@ -312,23 +312,25 @@ mjx-container[display="true"] + br {
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            1.9k words 
+            5.7k words 
           </div>
         </div>
         
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algebra/" rel="tag">Algebra</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algebraic-Geometry/" rel="tag">Algebraic Geometry</a></li></ul>
 
       </header>
       <div class="e-content article-entry" itemprop="articleBody">
         
           <div class="truncate-text">
             
-              本文是笔者学习群表示论的笔记(简略版). 更详细的版本(也许)将在后续以正式笔记(Latex)形式发布.
-一些基本概念本节介绍一些基本概念. 这一部分我们参考的是GTM42.
-基本定义与例子设是一个群, 是域上的线性空间, 记上全体自同构所成的集合为. 称是在上的一个线性表示(linear representation), 如果是一个群同态, 即对任意的, 成立. 我们常常记. 我们称为的一个表示空间(representation space), 或简单称为的一个表示. 在不致混淆的前提下, 我们也称或是的一个表示. 我们称为表示的次数.
-下面我们总设是一个有限群, , 是有限维线性空间. 设为的一个基, 由线性代数的知识有对任意的, 在基下有表示矩阵. 显然我们有, . 因此如果我们用表示的元, 那么
-
-r_{ij}\left( st \right) =\sum_k{r_{ik}\left( s \right) r_{kj}\left( t \right)}.反之, 每一个满足如上条件的矩阵都确定了一个线性表示. 因此每一个线性表示唯一对应到一个矩阵, 从而我们可以用矩阵的工具...
+              本文介绍Hilbert Nullstellensatz.
+Preliminaries
+让我们首先叙述Noether正规化引理.
+Theorem 1.1 (Noether's
+Normalization Lemma)
+令\(k\)是域, \(A\)是一个有限生成\(k\)代数. 那么存在一个非负整数\(r\)以及\(k\)上的代数独立元\(y_1,\cdots,y_r\in A\), 使得\(A\)在多项式环\(k[y_1,\cdots,y_r]\)上整.
+\(\rhd\mathbf{Proof:}\) 设\(x_1,\cdots,x_n\)是\(A\)的生成元. 我们可以对下标重新排序,
+使得\(x_1,\cdots,x_r\)在\(k\)上代数独立, \(x_{r+1},\cdots,x_n\)在\(k[x_1,\cdots,x_r]\)上代数. 下面我们对\(n\)进行归纳. 对\(n=r\)的情形, 只要取\(x_i=y_i\)就完成了证明. 下面设\(n&gt;r\), 且上述结论对\(n-1\)个生成元的情形是成立的. 那么\(x_n\)在\(k[x_1,...
             
           </div>
         
@@ -340,100 +342,7 @@ r_{ij}\left( st \right) =\sum_k{r_{ik}\left( s \right) r_{kj}\left( t \right)}.�
      
     <a class="right-panel  non-pic  "
       
-      href="/2024/04/15/%E7%BE%A4%E8%A1%A8%E7%A4%BA%E8%AE%BA%E7%AC%94%E8%AE%B0/" 
-    >
-       
-      <i class="fa-solid fa-angle-right non-pic"></i>
-       
-    </a>
-     
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-   
-
-
-<article id="post-有趣的小段子合集" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-   
-  <div class="article-inner">
-    <div class="article-main">
-      <header class="article-header">
-        
-<div class="main-title-bar">
-  <div class="main-title-dot"></div>
-  
-    
-      <h1 itemprop="name">
-        <a class="p-name article-title" href="/2024/03/25/%E6%9C%89%E8%B6%A3%E7%9A%84%E5%B0%8F%E6%AE%B5%E5%AD%90%E5%90%88%E9%9B%86/">有趣的小玩意合集</a>
-      </h1>
-    
-  
-</div>
-
-        <div class='meta-info-bar'>
-          <div class="meta-info">
-  <time class="dt-published" datetime="2024-03-25T11:39:02.000Z" itemprop="datePublished">2024-03-25</time>
-</div>
-          <div class="need-seperator meta-info">
-            <div class="meta-cate-flex">
-  
-    Uncategorized 
-   
-</div>
-  
-          </div>
-          <div class="wordcount need-seperator meta-info">
-            374 words 
-          </div>
-        </div>
-        
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/memes/" rel="tag">memes</a></li></ul>
-
-      </header>
-      <div class="e-content article-entry" itemprop="articleBody">
-        
-          <div class="truncate-text">
-            
-              本文将收集笔者冲浪时遇到的有趣小东西.
-001Mathematical “urban legends” from MO, 这里有部分段子的中文翻译.
-002两个坍缩体在冰原上奔逃，突然提丰的永恒狩猎光圈亮起。
-其中一个坍缩体绝望地说道:完了，我们跑不过她的箭。
-另一个坍缩体乐观地说道:是的，但没关系，一切还有挽回的余地。
-绝望的坍缩体反驳他:你还搞不清楚吗，我们跑不过她的箭！一切都完了！
-乐观的坍缩体笑道:是的！但我只要跑的过你就够了！说完一脚把绝望的坍缩体踢倒在原地飞速跑离了技能范围。
-003投胎模拟器
-004 
-005 
-006 
-007wo读三声，cao读四声，表示愤怒
-wo读四声，cao读四声，表示惊叹
-wo读一声，cao读一声，表示轻蔑
-wo读四声，cao读二声，表示疑问
-wo读轻声，cao读四声，表示赞赏
-wo读四声，cao读轻声，表示吓一跳
-008xkcd小漫画
-009 
-010 
-
-            
-          </div>
-        
-      </div>
-
-         
-    </div>
-    
-     
-    <a class="right-panel  non-pic  "
-      
-      href="/2024/03/25/%E6%9C%89%E8%B6%A3%E7%9A%84%E5%B0%8F%E6%AE%B5%E5%AD%90%E5%90%88%E9%9B%86/" 
+      href="/2024/06/26/Nullstellensatz/" 
     >
        
       <i class="fa-solid fa-angle-right non-pic"></i>
@@ -521,103 +430,6 @@ Artin-Schreier多项式
     <a class="right-panel  non-pic  "
       
       href="/2024/03/18/Selmer-s-Theorem-on-Irreducible-Polynomials/" 
-    >
-       
-      <i class="fa-solid fa-angle-right non-pic"></i>
-       
-    </a>
-     
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-   
-
-
-<article id="post-明日方舟桌游规则" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-   
-  <div class="article-inner">
-    <div class="article-main">
-      <header class="article-header">
-        
-<div class="main-title-bar">
-  <div class="main-title-dot"></div>
-  
-    
-      <h1 itemprop="name">
-        <a class="p-name article-title" href="/2024/03/15/%E6%98%8E%E6%97%A5%E6%96%B9%E8%88%9F%E6%A1%8C%E6%B8%B8%E8%A7%84%E5%88%99/">明日方舟桌游规则</a>
-      </h1>
-    
-  
-</div>
-
-        <div class='meta-info-bar'>
-          <div class="meta-info">
-  <time class="dt-published" datetime="2024-03-15T13:34:10.000Z" itemprop="datePublished">2024-03-15</time>
-</div>
-          <div class="need-seperator meta-info">
-            <div class="meta-cate-flex">
-  
-    Uncategorized 
-   
-</div>
-  
-          </div>
-          <div class="wordcount need-seperator meta-info">
-            5.2k words 
-          </div>
-        </div>
-        
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B2%A5/" rel="tag">粥</a></li></ul>
-
-      </header>
-      <div class="e-content article-entry" itemprop="articleBody">
-        
-          <div class="truncate-text">
-            
-              鉴于我的室友锐评明日方舟桌游游城拓荒:筑基者(以下简称桌游)规则书写的像生物试卷,
-我们在本文中我们用人话来介绍该桌游的基本玩法.
-我们主要介绍四人玩法.
-在下文中, 使用粗体表示道具类专有名词,
-而斜体表示强调或其余需要标注的专有名词. 除非另加说明,
-牌堆均后背朝上摆放并应当做恰当的洗切.
-在下文中, 我们将用来作为哥伦比亚金券的单位.
-例如我们用来表示个哥伦比亚金券.
-起始设置
-我们分两部分(公共区域和玩家个人区域)分别介绍起始设置.
-公共区域
-
-将地图下方标有4人用地图的一面朝上置于桌面.
-将22张事件牌按照牌背的颜色分为红, 黄, 绿三个牌堆,
-置于地图旁.
-将6张城市样式牌牌面朝上地放在地图旁.
-从48张设施牌中取出4张核心指挥塔,
-3张延申枢纽放在一旁,
-将剩余的41张牌作为设施牌堆置于地图旁. 之后从设施牌堆中抽出6张,
-正面朝上放置在地图旁作为设施供应区.
-将35颗源石和40张哥伦比亚代金券放在地图旁作为资源供给物.
-将22个资源点指示物放在地图旁备用,
-将回合数标记放置在地图上回合数计数条"1"的位置.
-
-以上工...
-            
-          </div>
-        
-      </div>
-
-         
-    </div>
-    
-     
-    <a class="right-panel  non-pic  "
-      
-      href="/2024/03/15/%E6%98%8E%E6%97%A5%E6%96%B9%E8%88%9F%E6%A1%8C%E6%B8%B8%E8%A7%84%E5%88%99/" 
     >
        
       <i class="fa-solid fa-angle-right non-pic"></i>
@@ -1008,99 +820,6 @@ Mean Oscillation), 如果. 记为全体满足的局部可积函数构成的集�
    
 
 
-<article id="post-MC服务器搭建教程" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-   
-  <div class="article-inner">
-    <div class="article-main">
-      <header class="article-header">
-        
-<div class="main-title-bar">
-  <div class="main-title-dot"></div>
-  
-    
-      <h1 itemprop="name">
-        <a class="p-name article-title" href="/2024/02/16/MC%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/">搭建Minecraft小型模组服时可能遇到的问题和解决方案</a>
-      </h1>
-    
-  
-</div>
-
-        <div class='meta-info-bar'>
-          <div class="meta-info">
-  <time class="dt-published" datetime="2024-02-16T06:06:49.000Z" itemprop="datePublished">2024-02-16</time>
-</div>
-          <div class="need-seperator meta-info">
-            <div class="meta-cate-flex">
-  
-    Uncategorized 
-   
-</div>
-  
-          </div>
-          <div class="wordcount need-seperator meta-info">
-            1.3k words 
-          </div>
-        </div>
-        
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MC/" rel="tag">MC</a></li></ul>
-
-      </header>
-      <div class="e-content article-entry" itemprop="articleBody">
-        
-          <div class="truncate-text">
-            
-              本文将介绍如何使用fabric来搭建Java版Minecraft服务器(包含模组).
-请注意, 本文不会事无巨细地书写每一个细节,
-我们只介绍一些只看单一的教程难以解决或在实际操作中容易发生疏漏但一般教程不会提到的点.
-笔者在搭建服务器时主要参考的是明月庄主的这个视频.
-本文写于2024.2.16, 请注意时效问题.
-一些可能有用的链接
-Java17下载地址
-阿里云官网
-Fabric下载地址
-CurseForge官网
-关于租云服务器
-我们搭建服务器的第一步是租一个云服务器. 笔者选择的是阿里云,
-因为阿里云在实名了之后可以免费使用三个月的小型云服务器.
-具体的租赁过程我们不在此处展示(参考文首链接),
-这里只说几个值得注意的点.
-
-阿里云的服务器是可以白嫖三个月的(2024.2.16),
-在实名认证完成之后可以找到认证福利, 有的可以体验一个月,
-有的可以体验三个月. 因为小型的MC服务器事实上不需要很高的配置,
-所以笔者认为嫖三个月的更划算一些, 当然这个选择因人而异.
-如果你是白嫖的服务器, 那么你需要手动设置登陆密码. 具体操作见下图...
-            
-          </div>
-        
-      </div>
-
-         
-    </div>
-    
-     
-    <a class="right-panel  non-pic  "
-      
-      href="/2024/02/16/MC%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" 
-    >
-       
-      <i class="fa-solid fa-angle-right non-pic"></i>
-       
-    </a>
-     
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-   
-
-
 <article id="post-Level-Curves-of-a-Harmonic-Function" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
    
   <div class="article-inner">
@@ -1187,19 +906,270 @@ CurseForge官网
 
 
 
+   
 
-  <nav id="page-nav">
-    <!-- 在第二页时 page.prev_link 不知为何无法返回正确的链接 -->
-    <a id="prev-btn" class="page-nav-btn disabled" href=" /  ">
-      <i class="fa-solid fa-angle-left"></i>
-    </a>
-    <div id="num-bar">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a>  
+
+<article id="post-长公式显示测试-一个简单的数学分析问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 itemprop="name">
+        <a class="p-name article-title" href="/2024/02/11/%E9%95%BF%E5%85%AC%E5%BC%8F%E6%98%BE%E7%A4%BA%E6%B5%8B%E8%AF%95-%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90%E9%97%AE%E9%A2%98/">(长公式显示测试)一个简单的数学分析问题</a>
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-02-11T03:42:05.000Z" itemprop="datePublished">2024-02-11</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            2.1k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Analysis/" rel="tag">Analysis</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <div class="truncate-text">
+            
+              我们用一个简单的习题(来自Big
+Rudin第11章习题第6题)来测试一下较长公式的显示情况.
+题目
+设, 这里是单位开圆盘, 在上是一对一的, 且
+证明区域的面积为
+解答
+为了测试公式显示性能, 我们把步骤都写在了一起.
+事实上我们可以写的更清楚些, 但考虑到问题较为容易,
+我们不再详细书写步骤.
+我们用来表示的面积. 注意到  这里第一个等号来自于  倒数第二个等号来自于  从而  由此我们完成了证明.
+结论
+我们发现公式显示是正常的.
+
+            
+          </div>
+        
+      </div>
+
+         
     </div>
-    <a id="next-btn" class="page-nav-btn " href="/page/2/">
-      <i class="fa-solid fa-angle-right"></i>
+    
+     
+    <a class="right-panel  non-pic  "
+      
+      href="/2024/02/11/%E9%95%BF%E5%85%AC%E5%BC%8F%E6%98%BE%E7%A4%BA%E6%B5%8B%E8%AF%95-%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90%E9%97%AE%E9%A2%98/" 
+    >
+       
+      <i class="fa-solid fa-angle-right non-pic"></i>
+       
     </a>
-  </nav>
+     
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+   
+
+
+<article id="post-Notes-onAtiyah-Commutative-Algebra" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 itemprop="name">
+        <a class="p-name article-title" href="/2024/02/10/Notes-onAtiyah-Commutative-Algebra/">Notes on Atiyah Commutative Algebra</a>
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-02-10T07:17:30.000Z" itemprop="datePublished">2024-02-10</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            27k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algebra/" rel="tag">Algebra</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <div class="truncate-text">
+            
+              Last Update time: 2024/4/19, 前四章已全部完成.
+我们将Atiyah所著的Commutative
+Algebra中的一些内容放在这里讨论. 注意本文的主要受众只有笔者一人,
+因此有些笔者认为平凡的地方就略去不写,
+而对于笔者认为较困难的地方则十分啰嗦.
+完整的证明细节可以参考笔者的正式笔记(见about页面).
+本文所涉及的环都是含幺的交换环.
+提示: 推荐读者使用白底模式阅读,
+否则有些交换图的字体颜色会和背景颜色混淆.
+Chap.1 环与理想
+素谱(The Prime Spectrum)
+我们考虑环的全体素理想构成的集合.
+
+对于任意的的子集, 我们定义. 容易验证全体满足闭集公理, 因此我们在上赋予了一个拓扑,
+称这个拓扑为Zariski拓扑.
+现在我们研究中的开集. 我们定义为的补集, 那么它具有如下的性质:
+
+;
+当且仅当是幂零元.
+当且仅当是单位.
+当且仅当.
+注意本条事实上蕴含了第二条和第三条性质.
+是预紧的(quasi-compact).
+更一般地, 每一个都是预紧集,
+且一个集合是预紧的...
+            
+          </div>
+        
+      </div>
+
+         
+    </div>
+    
+     
+    <a class="right-panel  non-pic  "
+      
+      href="/2024/02/10/Notes-onAtiyah-Commutative-Algebra/" 
+    >
+       
+      <i class="fa-solid fa-angle-right non-pic"></i>
+       
+    </a>
+     
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+   
+
+
+<article id="post-Dave Hume论自杀 中文翻译" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 itemprop="name">
+        <a class="p-name article-title" href="/2024/02/10/Dave%20Hume%E8%AE%BA%E8%87%AA%E6%9D%80%20%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/">大卫·休谟 《论自杀》中文翻译</a>
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-02-10T05:10:12.000Z" itemprop="datePublished">2024-02-10</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            5.9k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Philosophy/" rel="tag">Philosophy</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <div class="truncate-text">
+            
+              Preface
+   这是笔者对Dave Hume的随笔On Suicide的中文翻译整理,
+主要翻译工作由软件DeepL完成, 笔者进行了校对和一些修订工作.
+由于笔者水平有限, 部分内容可能不通顺甚至不忠于原文,
+建议结合原文进行阅读.
+论自杀
+[英]大卫·休谟
+著    Clarigatio整理翻译
+  
+哲学所带来的一个显著优势在于，它提供了对迷信和错误宗教的至高无上的解药。所有其他针对这种有害疾病的治疗方法都是徒劳的，或者至少是不确定的。明智的常识和世俗实践，尽管在生活的大多数方面都很有效，但在这里却被发现是无效的：历史以及日常经验都提供了那些具有最强商业和事务能力的人一生都屈服于最粗俗迷信的实例。甚至愉快和温和的性情，虽然能为其他伤口带来安慰，却对如此剧毒的毒素无法起到任何治疗作用，我们可以特别观察到这一点，尤其是对于女性，尽管她们通常拥有这些大自然的丰厚馈赠，但她们的许多快乐都被这个令人厌烦的入侵者所破坏。但是一旦健全的哲学获得了思想的支配地位，迷信就会被有效地排除在外；可以公正地断言，她对这个敌人的胜利比对人类本性中大多数的恶习和不完美更为完全。...
+            
+          </div>
+        
+      </div>
+
+         
+    </div>
+    
+     
+    <a class="right-panel  non-pic  "
+      
+      href="/2024/02/10/Dave%20Hume%E8%AE%BA%E8%87%AA%E6%9D%80%20%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/" 
+    >
+       
+      <i class="fa-solid fa-angle-right non-pic"></i>
+       
+    </a>
+     
+  </div>
+  
+</article>
+
+
+
+
+
+
+
 
 
     </div>
@@ -1239,5 +1209,20 @@ CurseForge官网
 
   </div>
   <script src="/js/light-dark-switch.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

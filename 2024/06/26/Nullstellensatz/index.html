@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>Nullstellensatz | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="本文介绍Hilbert Nullstellensatz. Preliminaries 让我们首先叙述Noether正规化引理. Theorem 1.1 (Noether&#39;s Normalization Lemma) 令\(k\)是域, \(A\)是一个有限生成\(k\)代数. 那么存在一个非负整数\(r\)以及\(k\)上的代数独立元\(y_1,\cdots,y_r\in A\), 使得">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nullstellensatz">
+<meta property="og:url" content="http://example.com/2024/06/26/Nullstellensatz/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文介绍Hilbert Nullstellensatz. Preliminaries 让我们首先叙述Noether正规化引理. Theorem 1.1 (Noether&#39;s Normalization Lemma) 令\(k\)是域, \(A\)是一个有限生成\(k\)代数. 那么存在一个非负整数\(r\)以及\(k\)上的代数独立元\(y_1,\cdots,y_r\in A\), 使得">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-26T12:50:15.000Z">
+<meta property="article:modified_time" content="2024-06-26T14:59:53.307Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Algebraic Geometry">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="/images/55438782_p0.jpg" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Hexo </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/images/84247757_p1.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">Clarigatio </div>
+      <div class="dot"></div>
+      <div class="subtitle">per aspera ad astra. </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://store.steampowered.com" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com" title="GitHub"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Algebra/" rel="tag">Algebra</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Algebraic-Geometry/" rel="tag">Algebraic Geometry</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Analysis/" rel="tag">Analysis</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Philosophy/" rel="tag">Philosophy</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-Nullstellensatz" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        Nullstellensatz
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-06-26T12:50:15.000Z" itemprop="datePublished">2024-06-26</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            5.7k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algebraic-Geometry/" rel="tag">Algebraic Geometry</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <p>本文介绍<strong>Hilbert Nullstellensatz</strong>.</p>
+<h2 id="preliminaries">Preliminaries</h2>
+<p>让我们首先叙述<strong>Noether正规化引理</strong>.</p>
+<h3 id="theorem-1.1-noethers-normalization-lemma">Theorem 1.1 (Noether's
+Normalization Lemma)</h3>
+<p>令<span class="math inline">\(k\)</span>是域, <span
+class="math inline">\(A\)</span>是一个有限生成<span
+class="math inline">\(k\)</span>代数. 那么存在一个非负整数<span
+class="math inline">\(r\)</span>以及<span
+class="math inline">\(k\)</span>上的代数独立元<span
+class="math inline">\(y_1,\cdots,y_r\in A\)</span>, 使得<span
+class="math inline">\(A\)</span>在多项式环<span
+class="math inline">\(k[y_1,\cdots,y_r]\)</span>上整.</p>
+<p><span class="math inline">\(\rhd\mathbf{Proof:}\)</span> 设<span
+class="math inline">\(x_1,\cdots,x_n\)</span>是<span
+class="math inline">\(A\)</span>的生成元. 我们可以对下标重新排序,
+使得<span class="math inline">\(x_1,\cdots,x_r\)</span>在<span
+class="math inline">\(k\)</span>上代数独立, <span
+class="math inline">\(x_{r+1},\cdots,x_n\)</span>在<span
+class="math inline">\(k[x_1,\cdots,x_r]\)</span>上代数. 下面我们对<span
+class="math inline">\(n\)</span>进行归纳. 对<span
+class="math inline">\(n=r\)</span>的情形, 只要取<span
+class="math inline">\(x_i=y_i\)</span>就完成了证明. 下面设<span
+class="math inline">\(n&gt;r\)</span>, 且上述结论对<span
+class="math inline">\(n-1\)</span>个生成元的情形是成立的. 那么<span
+class="math inline">\(x_n\)</span>在<span
+class="math inline">\(k[x_1,\cdots,x_{n-1}]\)</span>上代数,
+从而存在一个多项式<span class="math inline">\(f\ne 0\)</span>使得<span
+class="math inline">\(f(x_1,\cdots,x_{n-1},x_n)=0\)</span>. 取<span
+class="math inline">\(d&gt;\mathrm{deg}f\)</span>, 定义<span
+class="math inline">\(x_i^\prime=x_i-x_n^{d_i}\)</span>, <span
+class="math inline">\(1\le i\le n-1\)</span>. 将上述代换带入<span
+class="math inline">\(f\)</span>, 我们有其中的一项为 <span
+class="math display">\[
+a_Ix^I=a_Ix_{1}^{i_1}\cdots x_{n-1}^{i_{n-1}}x_{n}^{i_n}=a_I\left(
+x_1+x_{n}^{d} \right) ^{i_1}\cdots \left( x_{n-1}+x_{n}^{d} \right)
+^{i_{n-1}}x_{n}^{i_n},
+\]</span> 从而<span class="math inline">\(x_n\)</span>具有次数<span
+class="math inline">\(e_I=i_n+i_1d+i_2d^2+\cdots+-{n-1}d^{n-1}\)</span>.
+根据<span class="math inline">\(d\)</span>的选择我们有对不同的<span
+class="math inline">\(a_Ix^I\)</span>有不同的<span
+class="math inline">\(e_I\)</span>. 取<span
+class="math inline">\(e_M=\max_I\{e_I\}\)</span>, 那么我们有 <span
+class="math display">\[
+a_Mf\left( x_{1}^{\prime}+x_{n}^{d},\cdots
+,x_{n-1}^{\prime}+x_{n}^{d},x_n \right) =0
+\]</span> 是<span class="math inline">\(x_n\)</span>的首一多项式,
+从而<span class="math inline">\(A^\prime\)</span>在<span
+class="math inline">\(A\)</span>上整.</p>
+<p>下面是一些定义和基本性质.</p>
+<h3 id="definition-1.2">Definition 1.2</h3>
+<p>令<span class="math inline">\(A\)</span>是一个环, <span
+class="math inline">\(A\)</span>的<strong>Krull维数</strong>定义为<span
+class="math inline">\(A\)</span>的素理想链长度的上界.</p>
+<h3 id="proposition-1.3">Proposition 1.3</h3>
+<p>令<span class="math inline">\(S\)</span>是环, <span
+class="math inline">\(T\)</span>是<span
+class="math inline">\(S\)</span>的整扩张, 那么<span
+class="math inline">\(S\)</span>的Krull维数不大于<span
+class="math inline">\(T\)</span>的Krull维数.</p>
+<p><span class="math inline">\(\rhd\mathbf{Proof:}\)</span> 设<span
+class="math inline">\(\mathfrak{p}_1\subsetneq\mathfrak{p}_2\subsetneq\cdots\subsetneq\mathfrak{p}_n\)</span>是<span
+class="math inline">\(S\)</span>中的一个素理想链,
+那么由上升定理知对每个<span
+class="math inline">\(\mathfrak{p}_i\in\mathrm{Spec}(S)\)</span>,
+存在<span
+class="math inline">\(\mathfrak{q}_i\in\mathrm{Spec}(T)\)</span>使得<span
+class="math inline">\(\mathfrak{q}_i\cap S=\mathfrak{p}_i\)</span>,
+因此<span class="math inline">\(S\)</span>的Krull维数不大于<span
+class="math inline">\(T\)</span>的Krull维数.</p>
+<p>上述命题的一个平凡的推论是如果一个Krull维数是0的环是另一个环的整扩张,
+那么这个环的Krull维数也是<span class="math inline">\(0\)</span>.</p>
+<h3 id="corollary-1.4-zariskis-lemma">Corollary 1.4 (Zariski's
+Lemma)</h3>
+<p>令<span class="math inline">\(k\)</span>是域, <span
+class="math inline">\(K/k\)</span>是域扩张, 且<span
+class="math inline">\(K\)</span>是有限生成<span
+class="math inline">\(k\)</span>代数. 那么<span
+class="math inline">\(K/k\)</span>是有限维扩张.</p>
+<p><span class="math inline">\(\rhd\mathbf{Proof:}\)</span>
+由Noether正规化引理, 我们可以取<span
+class="math inline">\(y_1,\cdots,y_d\)</span>是<span
+class="math inline">\(k\)</span>上的代数独立元, 使得<span
+class="math inline">\(K\)</span>在<span
+class="math inline">\(k[y_1,\cdots,y_d]\)</span>上整. 由于<span
+class="math inline">\(K\)</span>是域, 它的Krull维数是<span
+class="math inline">\(0\)</span>, 从而<span
+class="math inline">\(k[y_1,\cdots,y_d]\)</span>的Krull维数也是<span
+class="math inline">\(0\)</span>, 从而<span
+class="math inline">\(d=0\)</span>. 因此<span
+class="math inline">\(K\)</span>在<span
+class="math inline">\(k\)</span>上整, 从而<span
+class="math inline">\(K\)</span>是有限生成<span
+class="math inline">\(k\)</span>-模, 进而<span
+class="math inline">\(K/k\)</span>是有限维扩张.</p>
+<p>在正式开始介绍Nullstellensatz之前, 我们先来规定一些术语.</p>
+<h3 id="definition-1.5">Definition 1.5</h3>
+<ul>
+<li><p>令<span class="math inline">\(A\)</span>是环, <span
+class="math inline">\(\mathfrak{a}\)</span>是<span
+class="math inline">\(A\)</span>的一个理想. 定义<span
+class="math inline">\(\mathfrak{a}\)</span>的<strong>radical</strong>(中文通常翻译为"根",
+但是笔者觉得radical好听一点)为 <span class="math display">\[
+\sqrt{\mathfrak{a}}=\left\{ f\in A:\text{存在}n\in \mathbb{Z}
+_+\text{使得}f^n\in \mathfrak{a} \right\} .
+\]</span> 称理想<span
+class="math inline">\(\mathfrak{a}\)</span>是根式理想, 如果<span
+class="math inline">\(\mathfrak{a}=\sqrt{\mathfrak{a}}\)</span>.</p></li>
+<li><p>令<span class="math inline">\(k\)</span>是代数闭域, <span
+class="math inline">\(A=k[t_1,\cdots,t_n]\)</span>是多项式环, <span
+class="math inline">\(S\subset A\)</span>. 定义<span
+class="math inline">\(S\)</span>的零点集为 <span class="math display">\[
+Z\left( S \right) =\left\{ x\in k^n:\text{对任意}f\in S,f\left( x
+\right) =0 \right\} .
+\]</span> 如果<span class="math inline">\(V\subset
+k^n\)</span>满足存在一些<span class="math inline">\(S\)</span>使得<span
+class="math inline">\(V=Z(S)\)</span>, 就称<span
+class="math inline">\(V\)</span>是<strong>仿射代数簇</strong>.</p></li>
+<li><p>令<span class="math inline">\(V\subset k^n\)</span>. 定义<span
+class="math inline">\(V\)</span>的<strong>vanishing
+set</strong>(笔者没找到中文翻译)为 <span class="math display">\[
+I\left( V \right) =\left\{ f\in A:\text{对任意}x\in V,\text{成立}f\left(
+x \right) =0 \right\} .
+\]</span></p></li>
+</ul>
+<h2 id="nullstellensatz">Nullstellensatz</h2>
+<p>我们直接证明最强的形式.</p>
+<h3 id="theorem-2.1-hilbert-nullstellensatz-strong-form">Theorem 2.1
+(Hilbert Nullstellensatz, strong form)</h3>
+<p>令<span class="math inline">\(k\)</span>是代数闭域, <span
+class="math inline">\(A=k[t_1,\cdots,t_n]\)</span>是多项式环, <span
+class="math inline">\(\mathfrak{a}\)</span>是<span
+class="math inline">\(A\)</span>的一个理想, 那么<span
+class="math inline">\(I(Z(\mathfrak{a}))=\sqrt{\mathfrak{a}}\)</span>.</p>
+<p><span class="math inline">\(\rhd\mathbf{Proof:}\)</span>
+我们的证明将分为三个部分.</p>
+<ul>
+<li><span class="math inline">\(A\)</span>中的极大理想都形如<span
+class="math inline">\(\mathfrak{m}_a=(t_1-a_1,\cdots,t_n-a_n)\)</span>,
+这里<span class="math inline">\(a\in k^n\)</span>. 这一结果也被称为weak
+nullstellensatz.</li>
+<li>设<span class="math inline">\(B\)</span>是一个有限生成<span
+class="math inline">\(k\)</span>-代数, <span
+class="math inline">\(\mathfrak{b}\)</span>是<span
+class="math inline">\(B\)</span>的一个理想, 那么<span
+class="math inline">\(\sqrt{\mathfrak{b}}\)</span>等于包含<span
+class="math inline">\(\mathfrak{b}\)</span>的<span
+class="math inline">\(B\)</span>的极大理想的交.
+这也是说任意一个域上的有限生成代数都是Jacobson环.</li>
+<li>证明strong nullstellensatz.</li>
+</ul>
+<p>我们先证明第一部分.</p>
+<p><span class="math inline">\(\mathbf{Lemma.1}\)</span> 令<span
+class="math inline">\(\mathfrak{m}_a=(t_1-a_1,\cdots,t_n-a_n)\)</span>,
+这里<span class="math inline">\(a=(a_1,\cdots,a_n)\in k^n\)</span>.
+那么<span
+class="math inline">\(A\)</span>的全体极大理想都具有上述形式.</p>
+<p><span class="math inline">\(\rhd\mathbf{Proof\ of\ Lemma:}\)</span>
+令<span class="math inline">\(a\in k^n\)</span>. 考虑赋值同态<span
+class="math inline">\(e_a:k[t_1,\cdots,t_n]\to k\)</span>, <span
+class="math inline">\(f\mapsto f(a)\)</span>. 显然这是一个满的代数同态,
+并且由于<span class="math inline">\(k\)</span>是代数闭域,
+我们可以记<span
+class="math inline">\(\mathrm{Ker}e_a=\mathfrak{m}_a\)</span>.
+下面令<span class="math inline">\(\mathfrak{m}\)</span>是一个<span
+class="math inline">\(k[t_1,\cdots,t_n]\)</span>的极大理想,
+我们考虑<span
+class="math inline">\(k[t_1,\cdots,t_n]/\mathfrak{m}\)</span>.
+这是一个<span class="math inline">\(k\)</span>的域扩张, 且是<span
+class="math inline">\(k\)</span>的一个有限生成代数,
+从而由Zariski引理知<span
+class="math inline">\(k[t_1,\cdots,t_n]/\mathfrak{m}\)</span>是<span
+class="math inline">\(k\)</span>的一个代数扩张. 但是<span
+class="math inline">\(k\)</span>是代数闭域, 因此我们由同构<span
+class="math inline">\(k[t_1,\cdots,t_n]/\mathfrak{m}\cong k\)</span>,
+因此<span
+class="math inline">\(\mathfrak{m}_a\subset\mathfrak{m}\)</span>.
+但是<span class="math inline">\(\mathfrak{m}_a\)</span>是一个极大理想,
+因此<span class="math inline">\(\mathfrak{m}_a=\mathfrak{m}\)</span>.
+这就完成了证明.</p>
+<p>下面我们来证明第二部分.</p>
+<p><span class="math inline">\(\mathbf{Lemma.2}\)</span> 令<span
+class="math inline">\(k\)</span>是代数闭域, <span
+class="math inline">\(B\)</span>是有限生成<span
+class="math inline">\(k\)</span>代数, <span
+class="math inline">\(\mathfrak{b}\)</span>是<span
+class="math inline">\(B\)</span>的一个理想. 那么我们有 <span
+class="math display">\[
+\sqrt{\mathfrak{b}}=\bigcap_{\mathfrak{b} \subset \mathfrak{m} \in
+\mathrm{Max}\left( B \right)}{\mathfrak{m}}.
+\]</span></p>
+<p><span class="math inline">\(\rhd\mathbf{Proof\ of\ Lemma:}\)</span>
+我们考虑投影映射<span class="math inline">\(\pi:B\to
+B/\mathfrak{b}\)</span>. 注意这个映射给出了如下的一一对应:</p>
+<ul>
+<li>包含<span class="math inline">\(\mathfrak{b}\)</span>的<span
+class="math inline">\(B\)</span>的素理想和<span
+class="math inline">\(\mathrm{Spec}(B/\mathfrak{b})\)</span>;</li>
+<li>包含<span class="math inline">\(\mathfrak{b}\)</span>的<span
+class="math inline">\(B\)</span>的极大理想和<span
+class="math inline">\(\mathrm{Max}(B/\mathfrak{b})\)</span>;</li>
+<li>包含<span class="math inline">\(\mathfrak{b}\)</span>的<span
+class="math inline">\(B\)</span>的根式理想和<span
+class="math inline">\(B/\mathfrak{b}\)</span>的根式理想.</li>
+</ul>
+<p>因此我们只要对<span
+class="math inline">\(\mathfrak{b}=(0)\)</span>的情形证明即可,
+否则考虑<span class="math inline">\(B/\mathfrak{b}\)</span>. 显然<span
+class="math inline">\(\sqrt{(0)}\)</span>包含在任意一个极大理想中,
+因为设若不然, 存在一个<span
+class="math inline">\(a\in\sqrt{(0)}\)</span>, <span
+class="math inline">\(a\notin\mathfrak{m}\)</span>. 但<span
+class="math inline">\(a\)</span>是幂零的, 因此<span
+class="math inline">\(a^n\in\mathfrak{m}\)</span>. 由于<span
+class="math inline">\(\mathfrak{m}\)</span>是极大理想, 它是素理想,
+从而<span class="math inline">\(a\in\mathfrak{m}\)</span>, 这是一个矛盾!
+现在我们证明反向的包含关系.</p>
+<p>令<span class="math inline">\(f\in B\)</span>不是幂零的,
+我们要说明存在一个极大理想<span
+class="math inline">\(\mathfrak{m}\)</span>使得<span
+class="math inline">\(f\notin\mathfrak{m}\)</span>. 由于<span
+class="math inline">\(f\)</span>不是幂零的, 因此我们可以考虑局部化<span
+class="math inline">\(B_f=S^{-1}B\)</span>, 这里<span
+class="math inline">\(S=\{f^n\}_{n\ge 0}\)</span>. 熟知 <span
+class="math display">\[\tag{\maltese}
+B_f\cong B\left[ t \right] /\left( ft-1 \right)
+\]</span> 是一个非平凡的<span class="math inline">\(k\)</span>代数,
+因此它有极大理想<span class="math inline">\(\mathfrak{m}\)</span>.
+考虑自然同态<span class="math inline">\(\phi:B\to B_f\)</span>.
+这是一个有限生成<span class="math inline">\(k\)</span>代数的同态,
+并且由Zariski引理知 <span class="math display">\[
+k\subset B/\phi ^{-1}\left( \mathfrak{m} \right) \subset
+B_f/\mathfrak{m}
+\]</span> 是一个有限扩张, 进一步由Noether正规化引理知<span
+class="math inline">\(k\subset
+B/\phi^{-1}(\mathfrak{m})\)</span>是一个整扩张. 由于<span
+class="math inline">\(k\)</span>是域, <span
+class="math inline">\(B/\phi^{-1}(\mathfrak{m})\)</span>也是域,
+因此<span
+class="math inline">\(\phi^{-1}(\mathfrak{m})\)</span>也是<span
+class="math inline">\(B\)</span>的一个极大理想.
+但这个极大理想不可能包含<span class="math inline">\(f\)</span>.
+这就完成了引理的证明.</p>
+<p>下面证明原定理. 令<span class="math inline">\(a\in k^n\)</span>.
+首先注意到<span class="math inline">\(a\in
+Z(\mathfrak{a})\)</span>当且仅当<span
+class="math inline">\(\mathfrak{a}\subset\mathfrak{m}_a\)</span>.
+因此包含<span
+class="math inline">\(\mathfrak{a}\)</span>的极大理想就是使得<span
+class="math inline">\(a\in Z(\mathfrak{a})\)</span>的极大理想<span
+class="math inline">\(\mathfrak{m}_a\)</span>.
+而在第二部分我们证明了<span
+class="math inline">\(\mathfrak{a}\)</span>的radical就是全体包含它的极大理想的交,
+因此我们有 <span class="math display">\[
+\sqrt{\mathfrak{a}}=\bigcap_{a\in Z\left( \mathfrak{a}
+\right)}{\mathfrak{m} _a}.
+\]</span> 又注意到对任意<span class="math inline">\(f\in
+k[t_1,\cdots,t_n]\)</span>和<span class="math inline">\(a\in
+k^n\)</span>, <span class="math inline">\(f(a)=0\)</span>当且仅当<span
+class="math inline">\(f\in\mathfrak{m}_a\)</span>. 因此对<span
+class="math inline">\(V\subset k^n\)</span>我们有 <span
+class="math display">\[
+I(V)=\bigcap_{a\in V}\mathfrak{m}_a.
+\]</span> 又<span class="math inline">\(a\in
+Z(\mathfrak{a})\)</span>当且仅当<span
+class="math inline">\(\mathfrak{a}\subset\mathfrak{m}_a\)</span>,
+我们最终有 <span class="math display">\[
+I\left( Z\left( \mathfrak{a} \right) \right) =\bigcap_{a\in Z\left(
+\mathfrak{a} \right)}{\mathfrak{m} _a}=\sqrt{\mathfrak{a}},
+\]</span> 至此, 定理证完.</p>
+<p>注记: 对于不熟知<span
+class="math inline">\(({\maltese})\)</span>中结论的读者, 请参考<a
+target="_blank" rel="noopener" href="https://math.stackexchange.com/questions/152236/localisation-is-isomorphic-to-a-quotient-of-polynomial-ring">这个链接</a>.
+我们证明的结果已经包含了weak nullstellensatz.</p>
+<h2 id="references">References</h2>
+<p>[1] Atiyah &amp; MacDonald, <em>An Introduction to Commutative
+Algebra</em>.</p>
+<p>[2] Torgeir Aambø, <em>On Hilbert’s nullstellensatz</em>.</p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left  disabled "
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/03/18/Selmer-s-Theorem-on-Irreducible-Polynomials/"
+      title="Selmer's Theorem on Irreducible Polynomials"
+     >
+
+    <p class="title-text">
+      
+        Selmer&#39;s Theorem on Irreducible Polynomials
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <div id="comment-card" class="comment-card">
+    <div class="main-title-bar">
+      <div class="main-title-dot"></div>
+      <div class="main-title">Comments </div>
+    </div>
+    <div id="vcomments"></div>
+  </div>
+  <script>
+      new Valine({"enable":true,"appId":"S2IAVptzMJt6uAeE6xepsoew-MdYXbMMI","appKey":"jpxXNwWbPNtjdl6GLvTaT1rc","placeholder":"Here to leave a comment :)","pageSize":10,"highlight":true,"serverURLs":"https://s2iavptz.api.lncldglobal.com","el":"#vcomments"});
+  </script>
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 Clarigatio<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>

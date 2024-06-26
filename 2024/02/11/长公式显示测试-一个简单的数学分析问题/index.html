@@ -28,7 +28,7 @@
 <meta property="og:description" content="我们用一个简单的习题(来自Big Rudin第11章习题第6题)来测试一下较长公式的显示情况. 题目 设, 这里是单位开圆盘, 在上是一对一的, 且 证明区域的面积为 解答 为了测试公式显示性能, 我们把步骤都写在了一起. 事实上我们可以写的更清楚些, 但考虑到问题较为容易, 我们不再详细书写步骤. 我们用来表示的面积. 注意到  这里第一个等号来自于  倒数第二个等号来自于">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-02-11T03:42:05.000Z">
-<meta property="article:modified_time" content="2024-02-11T03:50:05.721Z">
+<meta property="article:modified_time" content="2024-04-19T05:39:18.794Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Analysis">
 <meta name="twitter:card" content="summary">
@@ -49,7 +49,7 @@
   
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 7.1.1"><style>mjx-container[jax="SVG"] {
+<meta name="generator" content="Hexo 7.2.0"><style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
 
@@ -273,7 +273,7 @@ mjx-container[display="true"] + br {
   <div class="widget-wrap">
     <div class="widget">
       <h3 class="widget-title">Tags</h3>
-      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Algebra/" rel="tag">Algebra</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Analysis/" rel="tag">Analysis</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MC/" rel="tag">MC</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Philosophy/" rel="tag">Philosophy</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/memes/" rel="tag">memes</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%B2%A5/" rel="tag">粥</a></li></ul>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Algebra/" rel="tag">Algebra</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Algebraic-Geometry/" rel="tag">Algebraic Geometry</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Analysis/" rel="tag">Analysis</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Philosophy/" rel="tag">Philosophy</a></li></ul>
     </div>
   </div>
 
@@ -437,5 +437,20 @@ Rudin第11章习题第6题)来测试一下较长公式的显示情况.</p>
 
   </div>
   <script src="/js/light-dark-switch.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

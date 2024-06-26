@@ -49,7 +49,7 @@
   
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 7.1.1"><style>mjx-container[jax="SVG"] {
+<meta name="generator" content="Hexo 7.2.0"><style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
 
@@ -273,7 +273,7 @@ mjx-container[display="true"] + br {
   <div class="widget-wrap">
     <div class="widget">
       <h3 class="widget-title">Tags</h3>
-      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Algebra/" rel="tag">Algebra</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Analysis/" rel="tag">Analysis</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MC/" rel="tag">MC</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Philosophy/" rel="tag">Philosophy</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/memes/" rel="tag">memes</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%B2%A5/" rel="tag">粥</a></li></ul>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Algebra/" rel="tag">Algebra</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Algebraic-Geometry/" rel="tag">Algebraic Geometry</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Analysis/" rel="tag">Analysis</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Philosophy/" rel="tag">Philosophy</a></li></ul>
     </div>
   </div>
 
@@ -511,5 +511,20 @@ consistency condition</strong>): 对任意的<span class="math inline"><mjx-cont
 
   </div>
   <script src="/js/light-dark-switch.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
