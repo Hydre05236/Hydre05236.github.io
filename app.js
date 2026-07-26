@@ -5,6 +5,7 @@
   const publishedPosts = Array.isArray(window.PUBLISHED_POSTS) ? window.PUBLISHED_POSTS : [];
   const localPostKey = "math-blog:local-posts";
   const draftKey = "math-blog:draft";
+  const isAuthorMode = ["localhost", "127.0.0.1", ""].includes(location.hostname);
   const views = [...document.querySelectorAll(".view")];
 
   const starterDraft = String.raw`## 从一个问题开始
@@ -54,6 +55,7 @@ $$
   }
 
   function applyConfig() {
+    document.documentElement.classList.toggle("author-mode", isAuthorMode);
     document.title = config.documentTitle || config.title || "我的数学札记";
     document.querySelectorAll("[data-site-title]").forEach((el) => { el.textContent = config.title || "我的数学札记"; });
     document.querySelectorAll("[data-author]").forEach((el) => { el.textContent = config.author || "你的名字"; });
@@ -221,7 +223,7 @@ $$
             <h3>${isSearch ? "没有找到相关文章" : "第一篇文章正在酝酿"}</h3>
             <p>${isSearch ? "换一个关键词再试试。" : "从一个定义、一段推导，或一个还没解决的问题开始。"}</p>
           </div>
-          ${isSearch ? "" : '<a class="primary-action" href="#/write">打开写作台 <span aria-hidden="true">→</span></a>'}
+          ${isSearch || !isAuthorMode ? "" : '<a class="primary-action" href="#/write">打开写作台 <span aria-hidden="true">→</span></a>'}
         </div>`;
       return;
     }
@@ -308,7 +310,7 @@ $$
     if (hash.startsWith("#/article/")) {
       showView("article-view");
       renderArticle(decodeURIComponent(hash.slice("#/article/".length)));
-    } else if (hash === "#/write") {
+    } else if (hash === "#/write" && isAuthorMode) {
       showView("write-view");
       document.title = `写作台 · ${config.title || "数学札记"}`;
       updatePreview();
@@ -543,7 +545,7 @@ $$
   }
 
   applyConfig();
-  setupEditor();
+  if (isAuthorMode) setupEditor();
   setupMathCanvas();
   elements.searchInput.addEventListener("input", (event) => renderPostList(event.target.value));
   addEventListener("hashchange", route);

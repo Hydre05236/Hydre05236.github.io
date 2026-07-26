@@ -98,6 +98,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .site-nav .nav-write { color: var(--accent); font-weight: 700; }
 
 .view[hidden] { display: none !important; }
+html:not(.author-mode) .author-only { display: none !important; }
 
 .hero {
   position: relative;
