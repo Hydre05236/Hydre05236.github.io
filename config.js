@@ -11,7 +11,7 @@ window.SITE_CONFIG = {
     repo: "Hydre05236/Hydre05236.github.io",
     repoId: "R_kgDOLQgEQw",
     category: "Announcements",
-    categoryId: "",
+    categoryId: "DIC_kwDOLQgEQ84DCARB",
     mapping: "specific",
     theme: "light"
   }
