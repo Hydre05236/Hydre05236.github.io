@@ -5,11 +5,8 @@ $healthUrl = "http://127.0.0.1:4173/api/session"
 
 function Test-AuthorService {
   try {
-    $request = [System.Net.WebRequest]::Create($healthUrl)
-    $request.Timeout = 800
-    $response = $request.GetResponse()
-    $response.Close()
-    return $true
+    $response = Invoke-WebRequest -UseBasicParsing -Uri $healthUrl -TimeoutSec 1
+    return $response.StatusCode -eq 200
   } catch {
     return $false
   }
@@ -29,11 +26,6 @@ if (-not (Test-AuthorService)) {
   }
 
   if (-not $ready) {
-    Add-Type -AssemblyName PresentationFramework
-    [System.Windows.MessageBox]::Show(
-      "写作服务未能启动。请打开 Codex 并检查 math-blog 项目。",
-      "Hydre05236 写作台"
-    ) | Out-Null
     exit 1
   }
 }
