@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "posts": "node scripts/build-posts.mjs",
-    "dev": "node scripts/serve.mjs"
+    "dev": "node scripts/serve.mjs",
+    "author": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/launch-author.ps1"
   }
 }

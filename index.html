@@ -103,7 +103,8 @@
               <input id="import-file" type="file" accept=".md,.markdown,text/markdown,text/plain" />
             </label>
             <button id="save-draft" class="secondary-action" type="button">保存草稿</button>
-            <button id="export-post" class="primary-button" type="button">导出 Markdown</button>
+            <button id="export-post" class="secondary-action" type="button">导出 Markdown</button>
+            <button id="publish-github" class="primary-button" type="button" disabled>正在连接 GitHub</button>
           </div>
         </header>
 
@@ -131,6 +132,8 @@
           <button id="publish-local" class="text-button" type="button">加入本地文章列表</button>
           <span id="editor-status" class="editor-status" role="status"></span>
         </div>
+
+        <div id="publish-result" class="publish-result" role="status" aria-live="polite" hidden></div>
 
         <div id="studio-workspace" class="studio-workspace mode-split">
           <section class="editor-pane" aria-labelledby="editor-label">

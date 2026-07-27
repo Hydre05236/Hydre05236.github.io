@@ -7,6 +7,10 @@
   const draftKey = "math-blog:draft";
   const isAuthorMode = ["localhost", "127.0.0.1", ""].includes(location.hostname);
   const views = [...document.querySelectorAll(".view")];
+  let authorToken = "";
+  let currentSlug = "";
+  let currentDate = "";
+  let publisherReady = false;
 
   const starterDraft = String.raw`## 从一个问题开始
 
@@ -37,6 +41,8 @@ $$
     body: document.querySelector("#editor-body"),
     preview: document.querySelector("#editor-preview"),
     status: document.querySelector("#editor-status"),
+    publishButton: document.querySelector("#publish-github"),
+    publishResult: document.querySelector("#publish-result"),
     workspace: document.querySelector("#studio-workspace")
   };
 
@@ -256,7 +262,17 @@ $$
         <button class="delete-local-post" type="button">删除本地文章</button>`;
       elements.articleFooter.querySelector("button").addEventListener("click", () => deleteLocalPost(post.slug));
     } else {
-      elements.articleFooter.textContent = `作者：${config.author || ""}`;
+      const author = document.createElement("span");
+      author.textContent = `作者：${config.author || ""}`;
+      elements.articleFooter.replaceChildren(author);
+      if (isAuthorMode) {
+        const editButton = document.createElement("button");
+        editButton.className = "edit-source-post";
+        editButton.type = "button";
+        editButton.textContent = "继续编辑";
+        editButton.addEventListener("click", () => editArticle(post));
+        elements.articleFooter.append(editButton);
+      }
     }
     document.title = `${post.title} · ${config.title || "数学札记"}`;
     typeset(elements.articleBody);
@@ -334,8 +350,16 @@ $$
       const separator = line.indexOf(":");
       if (separator < 0) return;
       const key = line.slice(0, separator).trim();
-      let value = line.slice(separator + 1).trim().replace(/^['"]|['"]$/g, "");
-      if (key === "tags") value = value.replace(/^\[|\]$/g, "").split(",").map((tag) => tag.trim()).filter(Boolean);
+      let value = line.slice(separator + 1).trim();
+      const parseScalar = (input) => {
+        const trimmed = input.trim();
+        if (trimmed.startsWith('"') && trimmed.endsWith('"')) {
+          try { return JSON.parse(trimmed); } catch { return trimmed.slice(1, -1); }
+        }
+        return trimmed.replace(/^'|'$/g, "");
+      };
+      if (key === "tags") value = value.replace(/^\[|\]$/g, "").split(",").map(parseScalar).filter(Boolean);
+      else value = parseScalar(value);
       meta[key] = value;
     });
     return { meta, content: normalized.slice(end + 5) };
@@ -349,8 +373,15 @@ $$
     return latin || `note-${Date.now()}`;
   }
 
+  function localToday() {
+    const now = new Date();
+    return new Date(now.getTime() - now.getTimezoneOffset() * 60_000).toISOString().slice(0, 10);
+  }
+
   function currentDraft() {
     return {
+      slug: currentSlug,
+      date: currentDate,
       title: elements.title.value.trim(),
       summary: elements.summary.value.trim(),
       tags: elements.tags.value.split(/[,，]/).map((tag) => tag.trim()).filter(Boolean),
@@ -370,8 +401,12 @@ $$
   }
 
   function saveDraft() {
-    localStorage.setItem(draftKey, JSON.stringify(currentDraft()));
+    persistDraft();
     flashStatus("草稿已保存");
+  }
+
+  function persistDraft() {
+    localStorage.setItem(draftKey, JSON.stringify(currentDraft()));
   }
 
   function loadDraft() {
@@ -381,15 +416,17 @@ $$
     elements.summary.value = draft?.summary || "";
     elements.tags.value = (draft?.tags || []).join(", ");
     elements.body.value = draft?.content || starterDraft;
+    currentSlug = draft?.slug || "";
+    currentDate = draft?.date || "";
   }
 
   function exportDraft() {
     const draft = currentDraft();
-    const today = new Date().toISOString().slice(0, 10);
-    const content = `---\ntitle: "${draft.title || "未命名文章"}"\ndate: ${today}\nsummary: "${draft.summary.replaceAll('"', '\\"')}"\ntags: [${draft.tags.join(", ")}]\n---\n\n${draft.content.trim()}\n`;
+    const date = draft.date || localToday();
+    const content = `---\ntitle: "${draft.title || "未命名文章"}"\ndate: ${date}\nsummary: "${draft.summary.replaceAll('"', '\\"')}"\ntags: [${draft.tags.join(", ")}]\n---\n\n${draft.content.trim()}\n`;
     const link = document.createElement("a");
     link.href = URL.createObjectURL(new Blob([content], { type: "text/markdown;charset=utf-8" }));
-    link.download = `${slugify(draft.title || "untitled")}.md`;
+    link.download = `${draft.slug || slugify(draft.title || "untitled")}.md`;
     link.click();
     URL.revokeObjectURL(link.href);
     flashStatus("Markdown 已导出");
@@ -405,13 +442,112 @@ $$
     const post = {
       ...draft,
       slug: `${slugify(draft.title)}-${Date.now().toString(36)}`,
-      date: new Date().toISOString().slice(0, 10),
+      date: localToday(),
       local: true
     };
     const posts = getLocalPosts();
     posts.unshift(post);
     localStorage.setItem(localPostKey, JSON.stringify(posts));
     flashStatus("已加入本地文章列表");
+  }
+
+  function setPublishResult(kind, message, href = "") {
+    elements.publishResult.hidden = false;
+    elements.publishResult.className = `publish-result ${kind}`;
+    const text = document.createElement("span");
+    text.textContent = message;
+    elements.publishResult.replaceChildren(text);
+    if (href) {
+      const link = document.createElement("a");
+      link.href = href;
+      link.target = "_blank";
+      link.rel = "noreferrer";
+      link.textContent = "查看线上文章";
+      elements.publishResult.append(link);
+    }
+  }
+
+  async function setupPublisher() {
+    if (!isAuthorMode) return;
+    try {
+      const response = await fetch("/api/session", { cache: "no-store" });
+      if (!response.ok) throw new Error("本地写作服务不可用。");
+      const session = await response.json();
+      if (!session.author || !session.token) throw new Error("无法建立写作会话。");
+      authorToken = session.token;
+      publisherReady = true;
+      elements.publishButton.disabled = false;
+      elements.publishButton.textContent = "发布到 GitHub";
+    } catch {
+      elements.publishButton.disabled = true;
+      elements.publishButton.textContent = "发布服务未连接";
+      setPublishResult("warning", "请从桌面的“Hydre05236 写作台”快捷方式进入，才能直接发布文章。");
+    }
+  }
+
+  async function publishToGitHub(force = false) {
+    const draft = currentDraft();
+    if (!draft.title) {
+      elements.title.focus();
+      return setPublishResult("error", "请先填写文章标题。");
+    }
+    if (!draft.summary) {
+      elements.summary.focus();
+      return setPublishResult("error", "请先填写文章摘要。");
+    }
+    if (!draft.content.trim()) {
+      elements.body.focus();
+      return setPublishResult("error", "文章正文不能为空。");
+    }
+    if (!publisherReady) return setPublishResult("error", "本地发布服务尚未连接。");
+
+    elements.publishButton.disabled = true;
+    elements.publishButton.textContent = "正在发布";
+    setPublishResult("working", "正在同步 GitHub、生成文章索引并发布……");
+
+    try {
+      const response = await fetch("/api/publish", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Author-Token": authorToken
+        },
+        body: JSON.stringify({ ...draft, force })
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        if (result.code === "ARTICLE_EXISTS" && !force && window.confirm("已有同名文章。是否用当前草稿更新它？")) {
+          return await publishToGitHub(true);
+        }
+        throw new Error(result.error || "发布失败，请稍后重试。");
+      }
+
+      currentSlug = result.post.slug;
+      currentDate = result.post.date;
+      const existingIndex = publishedPosts.findIndex((post) => post.slug === result.post.slug);
+      if (existingIndex >= 0) publishedPosts.splice(existingIndex, 1, result.post);
+      else publishedPosts.unshift(result.post);
+      persistDraft();
+      setPublishResult("success", `已推送到 GitHub（${result.commit}）。GitHub Pages 通常会在稍后更新。`, result.liveUrl);
+    } catch (error) {
+      setPublishResult("error", error.message || "发布失败，请稍后重试。");
+    } finally {
+      elements.publishButton.disabled = !publisherReady;
+      elements.publishButton.textContent = "发布到 GitHub";
+    }
+  }
+
+  function editArticle(post) {
+    currentSlug = post.slug;
+    currentDate = post.date || "";
+    elements.title.value = post.title || "";
+    elements.summary.value = post.summary || "";
+    elements.tags.value = (post.tags || []).join(", ");
+    elements.body.value = post.content || "";
+    persistDraft();
+    updatePreview();
+    elements.publishResult.hidden = true;
+    location.hash = "#/write";
   }
 
   function setMode(mode) {
@@ -428,13 +564,21 @@ $$
     loadDraft();
     updatePreview();
     let previewTimer;
+    let autosaveTimer;
+    const queueAutosave = () => {
+      clearTimeout(autosaveTimer);
+      autosaveTimer = setTimeout(persistDraft, 700);
+    };
     elements.body.addEventListener("input", () => {
       clearTimeout(previewTimer);
       previewTimer = setTimeout(updatePreview, 240);
+      queueAutosave();
     });
+    [elements.title, elements.summary, elements.tags].forEach((input) => input.addEventListener("input", queueAutosave));
     document.querySelector("#save-draft").addEventListener("click", saveDraft);
     document.querySelector("#export-post").addEventListener("click", exportDraft);
     document.querySelector("#publish-local").addEventListener("click", publishLocal);
+    elements.publishButton.addEventListener("click", () => publishToGitHub(false));
     document.querySelectorAll(".mode-button").forEach((button) => button.addEventListener("click", () => setMode(button.dataset.mode)));
     document.querySelector("#import-file").addEventListener("change", async (event) => {
       const [file] = event.target.files;
@@ -444,10 +588,14 @@ $$
       elements.summary.value = parsed.meta.summary || "";
       elements.tags.value = Array.isArray(parsed.meta.tags) ? parsed.meta.tags.join(", ") : "";
       elements.body.value = parsed.content.trim();
+      currentSlug = file.name.replace(/\.(md|markdown)$/i, "");
+      currentDate = parsed.meta.date || "";
+      persistDraft();
       updatePreview();
       flashStatus("草稿已导入");
       event.target.value = "";
     });
+    setupPublisher();
   }
 
   function setupMathCanvas() {

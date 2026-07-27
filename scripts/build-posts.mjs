@@ -6,6 +6,22 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const postsDirectory = path.join(root, "posts");
 const outputFile = path.join(postsDirectory, "posts.generated.js");
 
+function parseScalar(value) {
+  const trimmed = value.trim();
+  if (trimmed.startsWith('"') && trimmed.endsWith('"')) {
+    try { return JSON.parse(trimmed); } catch { return trimmed.slice(1, -1); }
+  }
+  if (trimmed.startsWith("'") && trimmed.endsWith("'")) {
+    return trimmed.slice(1, -1).replace(/''/g, "'");
+  }
+  return trimmed;
+}
+
+function localToday() {
+  const now = new Date();
+  return new Date(now.getTime() - now.getTimezoneOffset() * 60_000).toISOString().slice(0, 10);
+}
+
 function parseFrontMatter(source, filename) {
   const normalized = source.replace(/\r\n?/g, "\n");
   if (!normalized.startsWith("---\n")) {
@@ -19,9 +35,11 @@ function parseFrontMatter(source, filename) {
     const separator = line.indexOf(":");
     if (separator === -1) continue;
     const key = line.slice(0, separator).trim();
-    let value = line.slice(separator + 1).trim().replace(/^['"]|['"]$/g, "");
+    let value = line.slice(separator + 1).trim();
     if (key === "tags") {
-      value = value.replace(/^\[|\]$/g, "").split(",").map((tag) => tag.trim()).filter(Boolean);
+      value = value.replace(/^\[|\]$/g, "").split(",").map(parseScalar).filter(Boolean);
+    } else {
+      value = parseScalar(value);
     }
     meta[key] = value;
   }
@@ -30,7 +48,7 @@ function parseFrontMatter(source, filename) {
   return {
     slug: path.basename(filename, path.extname(filename)),
     title: meta.title,
-    date: meta.date || new Date().toISOString().slice(0, 10),
+    date: meta.date || localToday(),
     summary: meta.summary || "",
     tags: Array.isArray(meta.tags) ? meta.tags : [],
     content: normalized.slice(end + 5).trim()
