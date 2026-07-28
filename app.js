@@ -10,6 +10,7 @@
   let authorToken = "";
   let currentSlug = "";
   let currentDate = "";
+  let currentMode = "create";
   let publisherReady = false;
 
   const starterDraft = String.raw`## 从一个问题开始
@@ -41,6 +42,7 @@ $$
     body: document.querySelector("#editor-body"),
     preview: document.querySelector("#editor-preview"),
     status: document.querySelector("#editor-status"),
+    mode: document.querySelector("#editor-mode"),
     publishButton: document.querySelector("#publish-github"),
     publishResult: document.querySelector("#publish-result"),
     workspace: document.querySelector("#studio-workspace")
@@ -380,6 +382,7 @@ $$
 
   function currentDraft() {
     return {
+      mode: currentMode,
       slug: currentSlug,
       date: currentDate,
       title: elements.title.value.trim(),
@@ -416,8 +419,13 @@ $$
     elements.summary.value = draft?.summary || "";
     elements.tags.value = (draft?.tags || []).join(", ");
     elements.body.value = draft?.content || starterDraft;
-    currentSlug = draft?.slug || "";
+    const editingPost = draft?.mode === "update"
+      ? publishedPosts.find((post) => post.slug === draft.slug)
+      : null;
+    currentMode = editingPost ? "update" : "create";
+    currentSlug = editingPost?.slug || "";
     currentDate = draft?.date || "";
+    updateEditorMode();
   }
 
   function exportDraft() {
@@ -426,7 +434,7 @@ $$
     const content = `---\ntitle: "${draft.title || "未命名文章"}"\ndate: ${date}\nsummary: "${draft.summary.replaceAll('"', '\\"')}"\ntags: [${draft.tags.join(", ")}]\n---\n\n${draft.content.trim()}\n`;
     const link = document.createElement("a");
     link.href = URL.createObjectURL(new Blob([content], { type: "text/markdown;charset=utf-8" }));
-    link.download = `${draft.slug || slugify(draft.title || "untitled")}.md`;
+    link.download = `${draft.mode === "update" && draft.slug ? draft.slug : slugify(draft.title || "untitled")}.md`;
     link.click();
     URL.revokeObjectURL(link.href);
     flashStatus("Markdown 已导出");
@@ -467,6 +475,38 @@ $$
     }
   }
 
+  function updateEditorMode() {
+    if (currentMode === "update") {
+      const post = publishedPosts.find((item) => item.slug === currentSlug);
+      elements.mode.textContent = `正在编辑：${post?.title || elements.title.value.trim() || currentSlug}`;
+    } else {
+      elements.mode.textContent = "新文章";
+    }
+    if (publisherReady && !elements.publishButton.disabled) {
+      elements.publishButton.textContent = currentMode === "update" ? "更新到 GitHub" : "发布到 GitHub";
+    }
+  }
+
+  function newArticle() {
+    const draft = currentDraft();
+    const hasDraft = draft.title || draft.summary || draft.tags.length || draft.content.trim() !== starterDraft.trim();
+    if (hasDraft && !window.confirm("新建文章会清空当前写作台。请确认草稿已经保存或导出。")) return;
+
+    currentMode = "create";
+    currentSlug = "";
+    currentDate = "";
+    elements.title.value = "";
+    elements.summary.value = "";
+    elements.tags.value = "";
+    elements.body.value = starterDraft;
+    elements.publishResult.hidden = true;
+    persistDraft();
+    updatePreview();
+    updateEditorMode();
+    elements.title.focus();
+    flashStatus("已新建文章");
+  }
+
   async function setupPublisher() {
     if (!isAuthorMode) return;
     try {
@@ -477,7 +517,7 @@ $$
       authorToken = session.token;
       publisherReady = true;
       elements.publishButton.disabled = false;
-      elements.publishButton.textContent = "发布到 GitHub";
+      updateEditorMode();
     } catch {
       elements.publishButton.disabled = true;
       elements.publishButton.textContent = "发布服务未连接";
@@ -485,7 +525,7 @@ $$
     }
   }
 
-  async function publishToGitHub(force = false) {
+  async function publishToGitHub() {
     const draft = currentDraft();
     if (!draft.title) {
       elements.title.focus();
@@ -512,32 +552,32 @@ $$
           "Content-Type": "application/json",
           "X-Author-Token": authorToken
         },
-        body: JSON.stringify({ ...draft, force })
+        body: JSON.stringify(draft)
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok) {
-        if (result.code === "ARTICLE_EXISTS" && !force && window.confirm("已有同名文章。是否用当前草稿更新它？")) {
-          return await publishToGitHub(true);
-        }
         throw new Error(result.error || "发布失败，请稍后重试。");
       }
 
+      currentMode = "update";
       currentSlug = result.post.slug;
       currentDate = result.post.date;
       const existingIndex = publishedPosts.findIndex((post) => post.slug === result.post.slug);
       if (existingIndex >= 0) publishedPosts.splice(existingIndex, 1, result.post);
       else publishedPosts.unshift(result.post);
       persistDraft();
+      updateEditorMode();
       setPublishResult("success", `已推送到 GitHub（${result.commit}）。GitHub Pages 通常会在稍后更新。`, result.liveUrl);
     } catch (error) {
       setPublishResult("error", error.message || "发布失败，请稍后重试。");
     } finally {
       elements.publishButton.disabled = !publisherReady;
-      elements.publishButton.textContent = "发布到 GitHub";
+      updateEditorMode();
     }
   }
 
   function editArticle(post) {
+    currentMode = "update";
     currentSlug = post.slug;
     currentDate = post.date || "";
     elements.title.value = post.title || "";
@@ -546,6 +586,7 @@ $$
     elements.body.value = post.content || "";
     persistDraft();
     updatePreview();
+    updateEditorMode();
     elements.publishResult.hidden = true;
     location.hash = "#/write";
   }
@@ -576,9 +617,10 @@ $$
     });
     [elements.title, elements.summary, elements.tags].forEach((input) => input.addEventListener("input", queueAutosave));
     document.querySelector("#save-draft").addEventListener("click", saveDraft);
+    document.querySelector("#new-article").addEventListener("click", newArticle);
     document.querySelector("#export-post").addEventListener("click", exportDraft);
     document.querySelector("#publish-local").addEventListener("click", publishLocal);
-    elements.publishButton.addEventListener("click", () => publishToGitHub(false));
+    elements.publishButton.addEventListener("click", publishToGitHub);
     document.querySelectorAll(".mode-button").forEach((button) => button.addEventListener("click", () => setMode(button.dataset.mode)));
     document.querySelector("#import-file").addEventListener("change", async (event) => {
       const [file] = event.target.files;
@@ -588,11 +630,13 @@ $$
       elements.summary.value = parsed.meta.summary || "";
       elements.tags.value = Array.isArray(parsed.meta.tags) ? parsed.meta.tags.join(", ") : "";
       elements.body.value = parsed.content.trim();
-      currentSlug = file.name.replace(/\.(md|markdown)$/i, "");
+      currentMode = "create";
+      currentSlug = "";
       currentDate = parsed.meta.date || "";
       persistDraft();
       updatePreview();
-      flashStatus("草稿已导入");
+      updateEditorMode();
+      flashStatus("草稿已导入为新文章");
       event.target.value = "";
     });
     setupPublisher();

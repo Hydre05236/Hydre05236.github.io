@@ -107,8 +107,9 @@ function validatePost(payload) {
   const title = cleanSingleLine(payload.title, 200);
   const summary = cleanSingleLine(payload.summary, 500);
   const content = String(payload.content || "").replace(/\r\n/g, "\n").trim();
+  const mode = payload.mode === "update" ? "update" : "create";
   const requestedSlug = cleanSingleLine(payload.slug, 100);
-  const slug = requestedSlug || slugify(title);
+  const slug = mode === "update" ? requestedSlug : slugify(title);
   const tags = Array.isArray(payload.tags)
     ? payload.tags.map((tag) => cleanSingleLine(tag, 40)).filter(Boolean).slice(0, 12)
     : [];
@@ -119,6 +120,9 @@ function validatePost(payload) {
   if (!title) throw Object.assign(new Error("请先填写文章标题。"), { status: 400 });
   if (!summary) throw Object.assign(new Error("请填写一段文章摘要。"), { status: 400 });
   if (!content) throw Object.assign(new Error("文章正文不能为空。"), { status: 400 });
+  if (mode === "update" && !requestedSlug) {
+    throw Object.assign(new Error("缺少要更新的文章标识，请从已发布文章进入编辑。"), { status: 400 });
+  }
   if (content.length > 1_000_000) {
     throw Object.assign(new Error("文章内容过大，暂不支持超过 1 MB 的单篇文章。"), { status: 413 });
   }
@@ -129,7 +133,7 @@ function validatePost(payload) {
     throw Object.assign(new Error("标签中不能包含逗号或方括号。"), { status: 400 });
   }
 
-  return { title, summary, content, slug, tags, date, force: payload.force === true };
+  return { title, summary, content, slug, tags, date, mode };
 }
 
 function yamlString(value) {
@@ -229,10 +233,16 @@ async function publishPost(payload) {
     if (error.code !== "ENOENT") throw error;
   }
 
-  if (articleExists && !post.force) {
-    const error = new Error("已有同名文章。确认后可以更新这篇文章。 ");
+  if (articleExists && post.mode === "create") {
+    const error = new Error("该标题对应的文章地址已经存在。请从已有文章进入编辑，或修改新文章标题。");
     error.status = 409;
     error.code = "ARTICLE_EXISTS";
+    throw error;
+  }
+  if (!articleExists && post.mode === "update") {
+    const error = new Error("要更新的文章不存在。请返回文章列表重新进入编辑。");
+    error.status = 409;
+    error.code = "ARTICLE_NOT_FOUND";
     throw error;
   }
 
@@ -250,7 +260,7 @@ async function publishPost(payload) {
     await runGit(["add", "--", relativeArticle, relativeGenerated]);
     const staged = await runGit(["diff", "--cached", "--quiet"], [0, 1]);
     if (staged.code === 1) {
-      const action = articleExists ? "Update" : "Publish";
+      const action = post.mode === "update" ? "Update" : "Publish";
       await runGit(["commit", "-m", `${action} article: ${post.title}`]);
       committed = true;
     }
@@ -259,7 +269,7 @@ async function publishPost(payload) {
     const commit = (await runGit(["rev-parse", "--short", "HEAD"])).stdout;
     return {
       commit,
-      created: !articleExists,
+      created: post.mode === "create",
       liveUrl: `https://hydre05236.github.io/#/article/${encodeURIComponent(post.slug)}`,
       post: {
         content: post.content,

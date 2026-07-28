@@ -96,12 +96,14 @@
           <div>
             <p class="eyebrow">STUDIO</p>
             <h1>写作台</h1>
+            <p id="editor-mode" class="studio-mode">新文章</p>
           </div>
           <div class="studio-actions">
             <label class="secondary-action file-action">
               导入草稿
               <input id="import-file" type="file" accept=".md,.markdown,text/markdown,text/plain" />
             </label>
+            <button id="new-article" class="secondary-action" type="button">新建文章</button>
             <button id="save-draft" class="secondary-action" type="button">保存草稿</button>
             <button id="export-post" class="secondary-action" type="button">导出 Markdown</button>
             <button id="publish-github" class="primary-button" type="button" disabled>正在连接 GitHub</button>

@@ -288,6 +288,7 @@ html:not(.author-mode) .author-only { display: none !important; }
   padding: 58px 0 84px;
 }
 .studio-header { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-bottom: 38px; }
+.studio-mode { margin: 6px 0 0; color: var(--muted); font-family: var(--mono); font-size: 12px; }
 .studio-actions { display: flex; flex-wrap: wrap; gap: 9px; }
 .secondary-action, .primary-button, .text-button {
   min-height: 40px;
