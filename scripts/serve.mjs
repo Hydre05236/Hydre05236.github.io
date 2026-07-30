@@ -14,6 +14,7 @@ const buildPostsScript = path.join(root, "scripts", "build-posts.mjs");
 const port = Number(process.env.PORT || 4173);
 const authorToken = crypto.randomBytes(32).toString("hex");
 const maxRequestBytes = 1_100_000;
+const gitNetworkRetryDelays = [0, 2_000, 6_000];
 let publishing = false;
 
 const mime = {
@@ -179,6 +180,35 @@ async function runGit(args, allowedCodes = [0]) {
   }
 }
 
+function isTransientGitNetworkError(message) {
+  return /RPC failed|curl \d+|connection (?:was )?reset|expected flush after ref listing|failed to connect|couldn't connect|could not resolve host|timed? out|timeout|remote end hung up|early EOF|TLS|SSL|HTTP\/2 stream|(?:^|\s)(?:502|503|504)(?:\s|$)/i.test(message);
+}
+
+async function wait(milliseconds) {
+  await new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+async function runNetworkGit(args) {
+  let lastError = null;
+
+  for (const delay of gitNetworkRetryDelays) {
+    if (delay) await wait(delay);
+    try {
+      return await runGit(["-c", "http.version=HTTP/1.1", ...args]);
+    } catch (error) {
+      lastError = error;
+      if (!isTransientGitNetworkError(error.message)) throw error;
+    }
+  }
+
+  const error = new Error(
+    `GitHub 连接在自动重试 ${gitNetworkRetryDelays.length} 次后仍不可用。你的草稿仍安全保存在写作台，请稍后再次点击发布。最后错误：${lastError?.message || "网络连接失败。"}`
+  );
+  error.status = 503;
+  error.code = "GIT_NETWORK_UNAVAILABLE";
+  throw error;
+}
+
 async function ensureCleanWorktree() {
   const status = await runGit(["status", "--porcelain"]);
   if (status.stdout) {
@@ -195,7 +225,7 @@ async function isAncestor(ancestor, descendant) {
 }
 
 async function synchronizeRemote() {
-  await runGit(["fetch", "origin", "master"]);
+  await runNetworkGit(["fetch", "origin", "master"]);
   const head = (await runGit(["rev-parse", "HEAD"])).stdout;
   const remote = (await runGit(["rev-parse", "origin/master"])).stdout;
 
@@ -265,7 +295,7 @@ async function publishPost(payload) {
       committed = true;
     }
 
-    await runGit(["push", "origin", "master"]);
+    await runNetworkGit(["push", "origin", "master"]);
     const commit = (await runGit(["rev-parse", "--short", "HEAD"])).stdout;
     return {
       commit,
