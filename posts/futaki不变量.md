@@ -2,7 +2,7 @@
 title: "Futaki不变量"
 date: 2026-07-28
 summary: "本文是Futaki的原始论文的阅读笔记, 基本是将Futaki的论文用笔者习惯的符号重新写了一遍."
-tags: ["Futaki不变量", "KE度量"]
+tags: [Futaki不变量, KE度量]
 ---
 
 本文是Futaki在1983年发表在*Inventiones Mathematicae*上的论文*An Obstruction to the Existence of Einstein K\"ahler Metrics*的阅读笔记.(本文还没写完)
@@ -64,3 +64,31 @@ V\frac{\partial F}{\partial t}+VF\Delta \phi &=V\left( -\Delta \phi -\phi \right
 &=g^{j\bar{k}}\nabla _k\left( V^i\left( -\phi _{ij}+F_i\phi _j \right) \right) .
 \end{aligned}
 利用Stokes公式就完成了证明.$\quad\blacksquare$
+
+一个明显的观察是下面的结果.
+
+> 置$\delta_X=\dim\mathfrak{h}(X)/\mathfrak{h}_0(X)$, 则$\delta_X$是一个仅依赖于$X$的几何的数, 这里$\mathfrak{h}_0(X)=\mathbf{ker}f$. 若$X$上有K\"ahler-Einstein度量, 则$\delta_X=0$.
+
+下面我们来看$f$的一些别的性质. 我们有$f$在$\mathbf{Aut}(X)$下是不变的.
+
+> 对任意$a\in\mathbf{Aut}(X)$和$V\in\mathfrak{h}(X)$, 成立$f(\mathbf{Ad}_aV)=f(V)$.
+
+**Proof.** 我们把选取K\"ahler形式为$\omega$所定义出来的Futaki不变量记为$f_\omega$, 则由Futaki不变量不依赖于$\omega$的选取, 我们只要证明
+\[
+f_\omega(a_*X)=f_{a^*\omega}(X).
+\]
+而这只要做如下计算
+\[
+\begin{aligned}
+f\left( a_*V \right) &=\int_X{\left( a_*V \right) \left( F_{\omega} \right) \omega ^m}
+\\
+&=\int_X{a^*\left( \left( a_*V \right) \left( F_{\omega} \right) \omega ^m \right)}
+\\
+&=\int_X{\left( a^*\left( a_*V \right) \left( F_{\omega} \right) \right) \left( a^*\omega \right) ^m}
+\\
+&=\int_X{V\left( a^*F_{\omega} \right) \left( a^*\omega \right) ^m}
+\\
+&=f_{a^*\omega}\left( V \right) ,
+\end{aligned}
+\]
+其中第二个等号来自$a\in\mathbf{Aut}(X)$, 进而$\int_Xa^*\alpha=\int_X\alpha$对任意top form $\alpha$成立; 第四个等号来自$a^*(a_*X)(F)=X(a^*F)$, 最后一个等号来自$a^*\omega$的Ricci势是$a^*F_\omega$, 证毕.$\quad\blacksquare$
