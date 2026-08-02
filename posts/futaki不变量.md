@@ -2,7 +2,7 @@
 title: "Futaki不变量"
 date: 2026-07-28
 summary: "本文是Futaki的原始论文的阅读笔记, 基本是将Futaki的论文用笔者习惯的符号重新写了一遍."
-tags: [Futaki不变量, KE度量]
+tags: ["Futaki不变量", "KE度量"]
 ---
 
 本文是Futaki在1983年发表在*Inventiones Mathematicae*上的论文*An Obstruction to the Existence of Einstein K\"ahler Metrics*的阅读笔记.(本文还没写完)
@@ -92,3 +92,19 @@ f\left( a_*V \right) &=\int_X{\left( a_*V \right) \left( F_{\omega} \right) \ome
 \end{aligned}
 \]
 其中第二个等号来自$a\in\mathbf{Aut}(X)$, 进而$\int_Xa^*\alpha=\int_X\alpha$对任意top form $\alpha$成立; 第四个等号来自$a^*(a_*X)(F)=X(a^*F)$, 最后一个等号来自$a^*\omega$的Ricci势是$a^*F_\omega$, 证毕.$\quad\blacksquare$
+
+由此立刻得到两个推论.
+
+> Lie代数$\mathfrak{h}(X)$的导出代数包含在$\mathfrak{h}_0(X)$中. 特别地$f$是一个Lie代数同态.
+
+**Proof.** 我们要证明$[\mathfrak{h},\mathfrak{h}]\subseteq\mathfrak{h}_0$. 为此, 取$V,W\in\mathfrak{h}$, 考虑由$W$生成的一族单参数子群
+\[
+a_t=\exp(tW)\in\mathbf{Aut}(X),
+\]
+于是由上述定理知$f(\mathbf{Ad}_{a_t}V)=f(V)$对任意$t$都成立, 因此
+\[
+0=\left. \frac{\mathrm{d}}{\mathrm{d}t} \right|_{t=0}f\left( \mathbf{Ad}_{a_t}V \right) =f\left( \left. \frac{\mathrm{d}}{\mathrm{d}t} \right|_{t=0}\mathbf{Ad}_{a_t}V \right) =f\left( \left[ W,V \right] \right) ,
+\]
+证毕.$\quad\blacksquare$
+
+> 若$\mathfrak{h}(X)$是半单的, 则$\delta_M=0$; 若$\delta_X=1$, 则$\mathfrak{h}(X)$包含一个$\mathbf{Aut}(X)$-不变的超平面.
