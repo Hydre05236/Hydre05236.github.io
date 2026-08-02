@@ -43,6 +43,8 @@ $$
     preview: document.querySelector("#editor-preview"),
     status: document.querySelector("#editor-status"),
     mode: document.querySelector("#editor-mode"),
+    articlePicker: document.querySelector("#existing-article"),
+    independentScroll: document.querySelector("#independent-scroll"),
     publishButton: document.querySelector("#publish-github"),
     publishResult: document.querySelector("#publish-result"),
     workspace: document.querySelector("#studio-workspace")
@@ -392,6 +394,15 @@ $$
     };
   }
 
+  function hasMeaningfulDraft(draft = currentDraft()) {
+    return Boolean(
+      draft.title ||
+      draft.summary ||
+      draft.tags.length ||
+      draft.content.trim() !== starterDraft.trim()
+    );
+  }
+
   function flashStatus(message) {
     elements.status.textContent = message;
     clearTimeout(flashStatus.timer);
@@ -482,6 +493,7 @@ $$
     } else {
       elements.mode.textContent = "新文章";
     }
+    elements.articlePicker.value = currentMode === "update" ? currentSlug : "";
     if (publisherReady && !elements.publishButton.disabled) {
       elements.publishButton.textContent = currentMode === "update" ? "更新到 GitHub" : "发布到 GitHub";
     }
@@ -489,8 +501,7 @@ $$
 
   function newArticle() {
     const draft = currentDraft();
-    const hasDraft = draft.title || draft.summary || draft.tags.length || draft.content.trim() !== starterDraft.trim();
-    if (hasDraft && !window.confirm("新建文章会清空当前写作台。请确认草稿已经保存或导出。")) return;
+    if (hasMeaningfulDraft(draft) && !window.confirm("新建文章会清空当前写作台。请确认草稿已经保存或导出。")) return;
 
     currentMode = "create";
     currentSlug = "";
@@ -565,6 +576,7 @@ $$
       const existingIndex = publishedPosts.findIndex((post) => post.slug === result.post.slug);
       if (existingIndex >= 0) publishedPosts.splice(existingIndex, 1, result.post);
       else publishedPosts.unshift(result.post);
+      populateArticlePicker();
       persistDraft();
       updateEditorMode();
       setPublishResult("success", `已推送到 GitHub（${result.commit}）。GitHub Pages 通常会在稍后更新。`, result.liveUrl);
@@ -577,6 +589,12 @@ $$
   }
 
   function editArticle(post) {
+    const sameArticle = currentMode === "update" && currentSlug === post.slug;
+    if (!sameArticle && hasMeaningfulDraft() && !window.confirm("打开已有文章会替换当前写作台内容。请确认草稿已经保存或导出。")) {
+      elements.articlePicker.value = currentMode === "update" ? currentSlug : "";
+      return false;
+    }
+
     currentMode = "update";
     currentSlug = post.slug;
     currentDate = post.date || "";
@@ -589,10 +607,13 @@ $$
     updateEditorMode();
     elements.publishResult.hidden = true;
     location.hash = "#/write";
+    flashStatus("已载入已有文章");
+    return true;
   }
 
   function setMode(mode) {
-    elements.workspace.className = `studio-workspace mode-${mode}`;
+    elements.workspace.classList.remove("mode-split", "mode-edit", "mode-preview");
+    elements.workspace.classList.add(`mode-${mode}`);
     document.querySelectorAll(".mode-button").forEach((button) => {
       const active = button.dataset.mode === mode;
       button.classList.toggle("active", active);
@@ -601,7 +622,27 @@ $$
     if (mode !== "edit") updatePreview();
   }
 
+  function setIndependentScroll(enabled) {
+    elements.workspace.classList.toggle("independent-scroll", enabled);
+    flashStatus(enabled ? "已启用独立滚动" : "已恢复自动高度");
+  }
+
+  function populateArticlePicker() {
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "编辑已有文章";
+    const options = publishedPosts.map((post) => {
+      const option = document.createElement("option");
+      option.value = post.slug;
+      option.textContent = post.title;
+      return option;
+    });
+    elements.articlePicker.replaceChildren(placeholder, ...options);
+    elements.articlePicker.value = currentMode === "update" ? currentSlug : "";
+  }
+
   function setupEditor() {
+    populateArticlePicker();
     loadDraft();
     updatePreview();
     let previewTimer;
@@ -622,6 +663,11 @@ $$
     document.querySelector("#publish-local").addEventListener("click", publishLocal);
     elements.publishButton.addEventListener("click", publishToGitHub);
     document.querySelectorAll(".mode-button").forEach((button) => button.addEventListener("click", () => setMode(button.dataset.mode)));
+    elements.independentScroll.addEventListener("change", () => setIndependentScroll(elements.independentScroll.checked));
+    elements.articlePicker.addEventListener("change", () => {
+      const post = publishedPosts.find((item) => item.slug === elements.articlePicker.value);
+      if (post) editArticle(post);
+    });
     document.querySelector("#import-file").addEventListener("change", async (event) => {
       const [file] = event.target.files;
       if (!file) return;
@@ -633,6 +679,7 @@ $$
       currentMode = "create";
       currentSlug = "";
       currentDate = parsed.meta.date || "";
+      elements.articlePicker.value = "";
       persistDraft();
       updatePreview();
       updateEditorMode();

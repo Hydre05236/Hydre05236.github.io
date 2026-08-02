@@ -99,6 +99,12 @@
             <p id="editor-mode" class="studio-mode">新文章</p>
           </div>
           <div class="studio-actions">
+            <label class="article-select">
+              <span class="sr-only">编辑已有文章</span>
+              <select id="existing-article" aria-label="编辑已有文章">
+                <option value="">编辑已有文章</option>
+              </select>
+            </label>
             <label class="secondary-action file-action">
               导入草稿
               <input id="import-file" type="file" accept=".md,.markdown,text/markdown,text/plain" />
@@ -131,6 +137,10 @@
             <button class="mode-button" type="button" data-mode="edit" role="tab" aria-selected="false">编辑</button>
             <button class="mode-button" type="button" data-mode="preview" role="tab" aria-selected="false">预览</button>
           </div>
+          <label class="scroll-toggle">
+            <input id="independent-scroll" type="checkbox" />
+            <span>独立滚动</span>
+          </label>
           <button id="publish-local" class="text-button" type="button">加入本地文章列表</button>
           <span id="editor-status" class="editor-status" role="status"></span>
         </div>
