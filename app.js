@@ -45,6 +45,7 @@ $$
     mode: document.querySelector("#editor-mode"),
     articlePicker: document.querySelector("#existing-article"),
     independentScroll: document.querySelector("#independent-scroll"),
+    deleteButton: document.querySelector("#delete-article"),
     publishButton: document.querySelector("#publish-github"),
     publishResult: document.querySelector("#publish-result"),
     workspace: document.querySelector("#studio-workspace")
@@ -494,6 +495,8 @@ $$
       elements.mode.textContent = "新文章";
     }
     elements.articlePicker.value = currentMode === "update" ? currentSlug : "";
+    elements.deleteButton.hidden = currentMode !== "update";
+    elements.deleteButton.disabled = !publisherReady;
     if (publisherReady && !elements.publishButton.disabled) {
       elements.publishButton.textContent = currentMode === "update" ? "更新到 GitHub" : "发布到 GitHub";
     }
@@ -552,6 +555,7 @@ $$
     }
     if (!publisherReady) return setPublishResult("error", "本地发布服务尚未连接。");
 
+    elements.deleteButton.disabled = true;
     elements.publishButton.disabled = true;
     elements.publishButton.textContent = "正在发布";
     setPublishResult("working", "正在同步 GitHub、生成文章索引并发布……");
@@ -583,6 +587,55 @@ $$
     } catch (error) {
       setPublishResult("error", error.message || "发布失败，请稍后重试。");
     } finally {
+      elements.publishButton.disabled = !publisherReady;
+      updateEditorMode();
+    }
+  }
+
+  async function deleteArticle() {
+    if (currentMode !== "update" || !currentSlug) return;
+    const post = publishedPosts.find((item) => item.slug === currentSlug);
+    const title = post?.title || elements.title.value.trim() || currentSlug;
+    if (!window.confirm(`\u786e\u5b9a\u8981\u4ece\u7f51\u7ad9\u548c GitHub \u4ed3\u5e93\u5220\u9664\u300a${title}\u300b\u5417\uff1f\u6b64\u64cd\u4f5c\u4e0d\u80fd\u4ece\u7f51\u7ad9\u6062\u590d\u3002`)) return;
+    if (!publisherReady) return setPublishResult("error", "\u672c\u5730\u53d1\u5e03\u670d\u52a1\u5c1a\u672a\u8fde\u63a5\u3002");
+
+    elements.publishButton.disabled = true;
+    elements.deleteButton.disabled = true;
+    elements.deleteButton.textContent = "\u6b63\u5728\u5220\u9664";
+    setPublishResult("working", "\u6b63\u5728\u540c\u6b65 GitHub\u3001\u91cd\u5efa\u6587\u7ae0\u7d22\u5f15\u5e76\u5220\u9664\u2026\u2026");
+
+    try {
+      const response = await fetch("/api/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Author-Token": authorToken
+        },
+        body: JSON.stringify({ slug: currentSlug })
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || "\u5220\u9664\u5931\u8d25\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5\u3002");
+
+      const existingIndex = publishedPosts.findIndex((post) => post.slug === currentSlug);
+      if (existingIndex >= 0) publishedPosts.splice(existingIndex, 1);
+      currentMode = "create";
+      currentSlug = "";
+      currentDate = "";
+      elements.title.value = "";
+      elements.summary.value = "";
+      elements.tags.value = "";
+      elements.body.value = starterDraft;
+      elements.publishResult.hidden = true;
+      populateArticlePicker();
+      persistDraft();
+      updatePreview();
+      updateEditorMode();
+      elements.title.focus();
+      setPublishResult("success", `\u5df2\u4ece GitHub \u5220\u9664\u300a${title}\u300b\uff08${result.commit}\uff09\u3002`);
+    } catch (error) {
+      setPublishResult("error", error.message || "\u5220\u9664\u5931\u8d25\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5\u3002");
+    } finally {
+      elements.deleteButton.textContent = "\u5220\u9664\u6587\u7ae0";
       elements.publishButton.disabled = !publisherReady;
       updateEditorMode();
     }
@@ -664,6 +717,7 @@ $$
     elements.publishButton.addEventListener("click", publishToGitHub);
     document.querySelectorAll(".mode-button").forEach((button) => button.addEventListener("click", () => setMode(button.dataset.mode)));
     elements.independentScroll.addEventListener("change", () => setIndependentScroll(elements.independentScroll.checked));
+    elements.deleteButton.addEventListener("click", deleteArticle);
     elements.articlePicker.addEventListener("change", () => {
       const post = publishedPosts.find((item) => item.slug === elements.articlePicker.value);
       if (post) editArticle(post);

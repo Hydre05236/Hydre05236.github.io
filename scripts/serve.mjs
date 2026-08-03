@@ -321,6 +321,63 @@ async function publishPost(payload) {
   }
 }
 
+async function deletePost(payload) {
+  const slug = cleanSingleLine(payload.slug, 100);
+  if (!/^[\p{Letter}\p{Number}]+(?:-[\p{Letter}\p{Number}]+)*$/u.test(slug)) {
+    throw Object.assign(new Error("\u8981\u5220\u9664\u7684\u6587\u7ae0\u6807\u8bc6\u65e0\u6548\u3002"), { status: 400 });
+  }
+
+  await ensureCleanWorktree();
+  await synchronizeRemote();
+  await ensureCleanWorktree();
+
+  const articleFile = path.join(postsDirectory, `${slug}.md`);
+  const relativeArticle = path.relative(root, articleFile).replace(/\\/g, "/");
+  const relativeGenerated = path.relative(root, generatedPostsFile).replace(/\\/g, "/");
+  let oldArticle;
+  let oldGenerated;
+  let committed = false;
+
+  try {
+    oldArticle = await fs.readFile(articleFile);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      throw Object.assign(new Error("\u8981\u5220\u9664\u7684\u6587\u7ae0\u4e0d\u5b58\u5728\u3002\u8bf7\u5237\u65b0\u6587\u7ae0\u5217\u8868\u540e\u91cd\u8bd5\u3002"), { status: 404, code: "ARTICLE_NOT_FOUND" });
+    }
+    throw error;
+  }
+
+  try {
+    oldGenerated = await fs.readFile(generatedPostsFile);
+    await fs.rm(articleFile);
+    await execFileAsync(process.execPath, [buildPostsScript], {
+      cwd: root,
+      encoding: "utf8",
+      maxBuffer: 2 * 1024 * 1024,
+      timeout: 30_000,
+      windowsHide: true,
+    });
+
+    await runGit(["add", "--", relativeArticle, relativeGenerated]);
+    const staged = await runGit(["diff", "--cached", "--quiet"], [0, 1]);
+    if (staged.code === 1) {
+      await runGit(["commit", "-m", `Delete article: ${slug}`]);
+      committed = true;
+    }
+
+    await runNetworkGit(["push", "origin", "master"]);
+    const commit = (await runGit(["rev-parse", "--short", "HEAD"])).stdout;
+    return { commit, slug };
+  } catch (error) {
+    if (!committed) {
+      await fs.writeFile(articleFile, oldArticle);
+      if (oldGenerated) await fs.writeFile(generatedPostsFile, oldGenerated);
+      await runGit(["restore", "--staged", "--", relativeArticle, relativeGenerated], [0, 1, 128]);
+    }
+    throw error;
+  }
+}
+
 async function handleApi(request, response, pathname) {
   if (pathname === "/api/session" && request.method === "GET") {
     if (!isLocalHost(request)) return sendJson(response, 403, { error: "仅允许从本机访问写作服务。" });
@@ -345,6 +402,26 @@ async function handleApi(request, response, pathname) {
       return sendJson(response, error.status || 500, {
         code: error.code || "PUBLISH_FAILED",
         error: cleanSingleLine(error.message, 600) || "发布失败。",
+      });
+    } finally {
+      publishing = false;
+    }
+  }
+
+  if (pathname === "/api/delete" && request.method === "POST") {
+    if (!isTrustedAuthorRequest(request)) {
+      return sendJson(response, 403, { error: "\u5199\u4f5c\u4f1a\u8bdd\u65e0\u6548\uff0c\u8bf7\u4ece\u684c\u9762\u5feb\u6377\u65b9\u5f0f\u91cd\u65b0\u6253\u5f00\u3002" });
+    }
+    if (publishing) return sendJson(response, 409, { error: "\u53e6\u4e00\u9879\u53d1\u5e03\u64cd\u4f5c\u4ecd\u5728\u8fdb\u884c\uff0c\u8bf7\u7a0d\u5019\u3002", code: "PUBLISHING" });
+
+    publishing = true;
+    try {
+      const result = await deletePost(await readJson(request));
+      return sendJson(response, 200, result);
+    } catch (error) {
+      return sendJson(response, error.status || 500, {
+        code: error.code || "DELETE_FAILED",
+        error: cleanSingleLine(error.message, 600) || "\u5220\u9664\u5931\u8d25\u3002",
       });
     } finally {
       publishing = false;
