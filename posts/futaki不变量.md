@@ -5,7 +5,7 @@ summary: "本文是Futaki的原始论文的阅读笔记, 基本是将Futaki的�
 tags: ["Futaki不变量", "KE度量"]
 ---
 
-本文是Futaki在1983年发表在*Inventiones Mathematicae*上的论文*An Obstruction to the Existence of Einstein K\"ahler Metrics*的阅读笔记.(本文还没写完)
+本文是Futaki在1983年发表在*Inventiones Mathematicae*上的论文*An Obstruction to the Existence of Einstein K\"ahler Metrics*的阅读笔记.
 
 ### Futaki不变量
 
@@ -107,4 +107,6 @@ a_t=\exp(tW)\in\mathbf{Aut}(X),
 \]
 证毕.$\quad\blacksquare$
 
-> 若$\mathfrak{h}(X)$是半单的, 则$\delta_M=0$; 若$\delta_X=1$, 则$\mathfrak{h}(X)$包含一个$\mathbf{Aut}(X)$-不变的超平面.
+> 若$\mathfrak{h}(X)$是半单的, 则$\delta_X=0$; 若$\delta_X=1$, 则$\mathfrak{h}(X)$包含一个$\mathbf{Aut}(X)$-不变的超平面.
+
+**Proof.** 若$\mathfrak{h}$是半单的, 则$[\mathfrak{h},\mathfrak{h}]=\mathfrak{h}$, 从而$\mathfrak{h}\subseteq\mathfrak{h}_0$, 进而$\delta_X=0$. 当$\delta_X=1$时, 此时$\dim_{\mathbb{C}}(\mathfrak{h}/\mathfrak{h}_0)=1$, 因此$\mathfrak{h}_0$是$\mathfrak{h}$中的一个超平面. 现在对任意$a\in\mathbf{Aut}(X)$, 若$V\in\mathfrak{h}_0$, 则$f(\mathbf{Ad}_aX)=f(X)=0$, 所以$\mathbf{Ad}_aX\in\mathfrak{h}_0$, 即$\mathbf{Ad}_a\mathfrak{h}_0=\mathfrak{h}_0$, 证毕.$\quad\blacksquare$
