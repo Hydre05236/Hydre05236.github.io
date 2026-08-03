@@ -1,9 +1,70 @@
 ---
 title: "Lie群与Lie代数的基础知识"
 date: 2026-07-31
-summary: "本文粗略地记录了一些与Lie群和Lie代数相关的基础知识."
-tags: [Lie群, Lie代数]
+summary: "本文粗略地记录了一些与Lie群和Lie代数相关的基础知识. 我们不会给出过于具体的细节, 但大多数情况下我们会给出相当数量的例子."
+tags: ["Lie群", "Lie代数"]
 ---
+
+### 微分流形基础
+
+我们来看流的概念. 设$M$是光滑流形, $V$是$M$上的光滑向量场, $\gamma:J\to M$被称为$V$的一条积分曲线, 如果$\dot{\gamma}(t)=V_{\gamma(t)},\forall t\in J$. 容易证明对任意$p\in M$, 存在唯一的一条过$p$的极大积分曲线, 我们先假设$t\in\mathbb{R}$是全局定义的. 由此我们可以定义一个群作用$\mathbb{R}\curvearrowright M$为
+\[
+\theta:\mathbb{R}\times M\to M,(t,p)\mapsto\theta_t(p)=\theta^{(p)}(t),
+\]
+其中$\theta^{(p)}$是经过$p$点处的积分曲线.
+
+我们来看一些例子.
+
+* 平移场$V=\partial/\partial x$, $M=\mathbb{R}^2$. 取初值$p=(a,b)$, 置
+\[
+\theta^{(a,b)}(t)=(x(t),y(t)),
+\]
+则积分曲线方程为
+\[
+\dot{x}(t)=1,\dot{y}(t)=0,x(0)=a,y(0)=b,
+\]
+解出
+\[
+x(t)=a+t,\quad y(t)=b.
+\]
+于是$\theta^{(a,b)}(t)=(a+t,b)$, 进而我们有流$\tau_t(x,y)=(x+t,y)$.
+
+* 旋转场$V=x\frac{\partial}{\partial y}-y\frac{\partial}{\partial x}$, $M=\mathbb{R}^2$. 类似地写出积分曲线方程为
+\[
+\dot{x}(t)=-y(t),\dot{y}(t)=x(t),x(0)=a,y(0)=b,
+\]
+解出
+\[
+x(t)=a\cos t-b\sin t,\quad y(t)=a\sin t+b\cos t,
+\]
+于是我们有流
+\[
+\theta_t(x,y)=(x\cos t-y\sin t,x\sin t+y\cos t).
+\]
+
+* 我们来看一个不能定义全局流的例子. 令$V=x^2\frac{\partial}{\partial x}$, $M=\mathbb{R}$. 类似上面的计算将给出
+\[
+\theta_t(x,y)=\left(\frac{1}{1-xt},-y\right),
+\]
+于是我们有极大流域为$\mathcal{D}=\{(t,x)\in\mathbb{R}^2:1-tx>0\}$.
+
+* 我们来看一个流形上的流的例子. 设$h:\mathbb{S}^2\to\mathbb{R}$, $(x,y,z)\mapsto z$是高度函数, 我们考虑$h$的梯度流. 在环境空间中我们有$\nabla h=\mathbf{e}_3=(0,0,1)$, 于是
+\[
+X_p=\mathrm{grad}_{\mathbb{S}^2}h=\mathbf{e}_3-\langle e_3,p\rangle p.
+\]
+若$p=(x,y,z)$, 则$X_p=(-xz,-yz,1-z^2)$. 于是我们要解的微分方程为
+\[
+\dot{x}=-yz,\dot{y}=-xz,\dot{z}=1-z^2,x(0)=a,y(0)=b,z(0)=c,
+\]
+解得
+\[
+\theta _t\left( x,y,z \right) =\left( \frac{x}{\cosh \left( t \right) +z\sinh \left( t \right)},\frac{y}{\cosh \left( t \right) +z\sinh \left( t \right)},\frac{\sinh \left( t \right) +z\cosh \left( t \right)}{\cosh \left( t \right) +z\sinh \left( t \right)} \right) .
+\]
+
+我们把一些有用的命题罗列于此.
+
+> (积分曲线的自然性) 设$M,N$是两个光滑流形, $F:M\to N$是光滑映射, 则$X\in\Gamma(TM)$和$Y\in\Gamma(TN)$是$F$-相关的, 当且仅当$X$的积分曲线$\gamma$在$F$的复合下是$Y$的积分曲线.
+
 
 ### Lie群的Lie代数
 
@@ -63,3 +124,15 @@ Q(t)^{\top}Q(t)=\mathbf{I}+t(A^\top+A)+o(t),
 	&		&		\\
 \end{matrix} \right) :x,y,z\in \mathbb{R} \right\} .
 \]
+
+我们来看导出Lie代数的同态.
+
+> 设$G$和$H$是Lie群, $\mathfrak{g}$和$\mathfrak{h}$是对应的Lie代数, $F:G\to H$是Lie群同态. 对任意$X\in\mathfrak{g}$, 存在唯一的向量场$F_*X\in\mathfrak{h}$与$X$是$F$-相关的. 映射$F_*:\mathfrak{g}\to\mathfrak{h}$是一个Lie代数同态.
+
+### 指数映射
+
+我们先来看单参数子群. 一个单参数子群是指一个Lie群同态$\gamma:\mathbb{R}\to G$, 其中$\mathbb{R}$上的运算是加法. 下面的定理给出了单参数子群的刻画.
+
+> 设$G$是一个Lie群, $G$的单参数子群既为$G$的从原点出发的全体左不变向量场的极大积分曲线.
+
+**Sketch of Proof.** 一方面, 设$\gamma$是一条$X\in\mathfrak{g}$定义的极大积分曲线, 则由于$X$是左不变向量场, $X$是完备的, 从而$\gamma$定义在整个$\mathbb{R}$上. 利用平移引理容易证明$\gamma$是一个群. 反之, 设$\gamma$是一个单参数子群, 令$X=\gamma_*(\mathrm{d}/\mathrm{d}t)\in\mathfrak{g}$, 则$\gamma$是$X$的极大积分曲线, 证毕.////
