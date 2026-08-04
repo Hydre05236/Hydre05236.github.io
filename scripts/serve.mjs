@@ -109,8 +109,8 @@ function validatePost(payload) {
   const summary = cleanSingleLine(payload.summary, 500);
   const content = String(payload.content || "").replace(/\r\n/g, "\n").trim();
   const mode = payload.mode === "update" ? "update" : "create";
-  const requestedSlug = cleanSingleLine(payload.slug, 100);
-  const slug = mode === "update" ? requestedSlug : slugify(title);
+  const originalSlug = cleanSingleLine(payload.slug, 100);
+  const slug = slugify(title);
   const tags = Array.isArray(payload.tags)
     ? payload.tags.map((tag) => cleanSingleLine(tag, 40)).filter(Boolean).slice(0, 12)
     : [];
@@ -121,7 +121,7 @@ function validatePost(payload) {
   if (!title) throw Object.assign(new Error("请先填写文章标题。"), { status: 400 });
   if (!summary) throw Object.assign(new Error("请填写一段文章摘要。"), { status: 400 });
   if (!content) throw Object.assign(new Error("文章正文不能为空。"), { status: 400 });
-  if (mode === "update" && !requestedSlug) {
+  if (mode === "update" && !originalSlug) {
     throw Object.assign(new Error("缺少要更新的文章标识，请从已发布文章进入编辑。"), { status: 400 });
   }
   if (content.length > 1_000_000) {
@@ -130,11 +130,14 @@ function validatePost(payload) {
   if (!/^[\p{Letter}\p{Number}]+(?:-[\p{Letter}\p{Number}]+)*$/u.test(slug)) {
     throw Object.assign(new Error("文章文件名无效，请重新导入或新建草稿。"), { status: 400 });
   }
+  if (mode === "update" && !/^[\p{Letter}\p{Number}]+(?:-[\p{Letter}\p{Number}]+)*$/u.test(originalSlug)) {
+    throw Object.assign(new Error("\u8981\u66f4\u65b0\u7684\u6587\u7ae0\u6807\u8bc6\u65e0\u6548\u3002"), { status: 400 });
+  }
   if (tags.some((tag) => /[\[\],]/.test(tag))) {
     throw Object.assign(new Error("标签中不能包含逗号或方括号。"), { status: 400 });
   }
 
-  return { title, summary, content, slug, tags, date, mode };
+  return { title, summary, content, slug, originalSlug, tags, date, mode };
 }
 
 function yamlString(value) {
@@ -248,37 +251,54 @@ async function publishPost(payload) {
   await synchronizeRemote();
   await ensureCleanWorktree();
 
-  const articleFile = path.join(postsDirectory, `${post.slug}.md`);
-  const relativeArticle = path.relative(root, articleFile).replace(/\\/g, "/");
+  const sourceSlug = post.mode === "update" ? post.originalSlug : post.slug;
+  const sourceArticleFile = path.join(postsDirectory, `${sourceSlug}.md`);
+  const targetArticleFile = path.join(postsDirectory, `${post.slug}.md`);
+  const relativeSourceArticle = path.relative(root, sourceArticleFile).replace(/\\/g, "/");
+  const relativeTargetArticle = path.relative(root, targetArticleFile).replace(/\\/g, "/");
   const relativeGenerated = path.relative(root, generatedPostsFile).replace(/\\/g, "/");
-  let oldArticle = null;
+  const renamed = sourceArticleFile !== targetArticleFile;
+  let oldSourceArticle = null;
   let oldGenerated = null;
-  let articleExists = false;
+  let sourceArticleExists = false;
   let committed = false;
 
   try {
-    oldArticle = await fs.readFile(articleFile);
-    articleExists = true;
+    oldSourceArticle = await fs.readFile(sourceArticleFile);
+    sourceArticleExists = true;
   } catch (error) {
     if (error.code !== "ENOENT") throw error;
   }
 
-  if (articleExists && post.mode === "create") {
+  if (sourceArticleExists && post.mode === "create") {
     const error = new Error("该标题对应的文章地址已经存在。请从已有文章进入编辑，或修改新文章标题。");
     error.status = 409;
     error.code = "ARTICLE_EXISTS";
     throw error;
   }
-  if (!articleExists && post.mode === "update") {
+  if (!sourceArticleExists && post.mode === "update") {
     const error = new Error("要更新的文章不存在。请返回文章列表重新进入编辑。");
     error.status = 409;
     error.code = "ARTICLE_NOT_FOUND";
     throw error;
+  if (renamed) {
+    try {
+      await fs.access(targetArticleFile);
+      const error = new Error("\u65b0\u6807\u9898\u5bf9\u5e94\u7684\u6587\u7ae0\u5730\u5740\u5df2\u7ecf\u5b58\u5728\uff0c\u672a\u6267\u884c\u91cd\u547d\u540d\u3002");
+      error.status = 409;
+      error.code = "ARTICLE_EXISTS";
+      throw error;
+    } catch (error) {
+      if (error.code !== "ENOENT") throw error;
+    }
+  }
+
   }
 
   try {
     oldGenerated = await fs.readFile(generatedPostsFile);
-    await fs.writeFile(articleFile, serializePost(post), "utf8");
+    await fs.writeFile(targetArticleFile, serializePost(post), "utf8");
+    if (renamed) await fs.rm(sourceArticleFile);
     await execFileAsync(process.execPath, [buildPostsScript], {
       cwd: root,
       encoding: "utf8",
@@ -287,10 +307,10 @@ async function publishPost(payload) {
       windowsHide: true,
     });
 
-    await runGit(["add", "--", relativeArticle, relativeGenerated]);
+    await runGit(["add", "--", ...new Set([relativeSourceArticle, relativeTargetArticle, relativeGenerated])]);
     const staged = await runGit(["diff", "--cached", "--quiet"], [0, 1]);
     if (staged.code === 1) {
-      const action = post.mode === "update" ? "Update" : "Publish";
+      const action = renamed ? "Rename" : post.mode === "update" ? "Update" : "Publish";
       await runGit(["commit", "-m", `${action} article: ${post.title}`]);
       committed = true;
     }
@@ -312,10 +332,16 @@ async function publishPost(payload) {
     };
   } catch (error) {
     if (!committed) {
-      if (articleExists) await fs.writeFile(articleFile, oldArticle);
-      else await fs.rm(articleFile, { force: true });
+      if (renamed) {
+        await fs.rm(targetArticleFile, { force: true });
+        if (sourceArticleExists) await fs.writeFile(sourceArticleFile, oldSourceArticle);
+      } else if (sourceArticleExists) {
+        await fs.writeFile(sourceArticleFile, oldSourceArticle);
+      } else {
+        await fs.rm(sourceArticleFile, { force: true });
+      }
       if (oldGenerated) await fs.writeFile(generatedPostsFile, oldGenerated);
-      await runGit(["restore", "--staged", "--", relativeArticle, relativeGenerated], [0, 1, 128]);
+      await runGit(["restore", "--staged", "--", ...new Set([relativeSourceArticle, relativeTargetArticle, relativeGenerated])], [0, 1, 128]);
     }
     throw error;
   }

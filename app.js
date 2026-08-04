@@ -541,6 +541,7 @@ $$
 
   async function publishToGitHub() {
     const draft = currentDraft();
+    const previousSlug = currentSlug;
     if (!draft.title) {
       elements.title.focus();
       return setPublishResult("error", "请先填写文章标题。");
@@ -577,7 +578,7 @@ $$
       currentMode = "update";
       currentSlug = result.post.slug;
       currentDate = result.post.date;
-      const existingIndex = publishedPosts.findIndex((post) => post.slug === result.post.slug);
+      const existingIndex = publishedPosts.findIndex((post) => post.slug === previousSlug);
       if (existingIndex >= 0) publishedPosts.splice(existingIndex, 1, result.post);
       else publishedPosts.unshift(result.post);
       populateArticlePicker();
